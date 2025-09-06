@@ -7,23 +7,29 @@ type ToastProps = {
 };
 
 export default function Toast({ message, duration = 1200, onClose }: ToastProps) {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // Show toast
+    setIsVisible(true);
+    
+    // Hide toast after duration
     const timer = setTimeout(() => {
       setIsVisible(false);
       setTimeout(() => {
         onClose?.();
-      }, 300); // Время для анимации исчезновения
+      }, 160); // Wait for transition to complete
     }, duration);
-
+    
     return () => clearTimeout(timer);
   }, [duration, onClose]);
 
-  if (!isVisible) return null;
-
   return (
-    <div className="toast">
+    <div 
+      className={`toast ${isVisible ? 'show' : ''}`}
+      aria-live="polite"
+      role="status"
+    >
       {message}
     </div>
   );

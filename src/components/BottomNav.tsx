@@ -31,6 +31,17 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentPage, onPageChange 
   const go = (k: Page) => {
     onPageChange(k);
     (window as any).Telegram?.WebApp?.HapticFeedback?.selectionChanged?.();
+    
+    // Animate active line
+    requestAnimationFrame(() => {
+      const activeTab = document.querySelector('.tab.is-active');
+      if (activeTab) {
+        activeTab.classList.remove('activate');
+        requestAnimationFrame(() => {
+          activeTab.classList.add('activate');
+        });
+      }
+    });
   };
 
   return (

@@ -1,14 +1,16 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import SegmentedChips from '../components/SegmentedChips';
-import DishCard from '../components/DishCard';
+import QtyButton from '../components/QtyButton';
 import Toast from '../components/Toast';
 import { MENU } from '../data/menu';
 import { useCart } from '../store/cartContext';
 
 export const MenuPage: React.FC = () => {
-  const { add } = useCart();
+  const { add, remove } = useCart();
   const [selectedCategory, setSelectedCategory] = useState<'Pizza' | 'Vegan'>('Pizza');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [listOpacity, setListOpacity] = useState(1);
 
   const filteredMenu = useMemo(() => {
     return MENU.filter(item => {
@@ -30,15 +32,42 @@ export const MenuPage: React.FC = () => {
     },
   ];
 
+  const handleCategoryChange = (key: string) => {
+    const newCategory = key as 'Pizza' | 'Vegan';
+    
+    // Crossfade animation
+    setListOpacity(0);
+    setIsLoading(true);
+    
+    setTimeout(() => {
+      setSelectedCategory(newCategory);
+      setListOpacity(1);
+      setIsLoading(false);
+    }, 120);
+  };
+
   const handleAddToCart = (item: typeof MENU[0]) => {
     add({
       id: item.id,
       name: item.name,
       price: item.price,
     });
-    
-    // Показываем Toast
+
     setToastMessage('Добавлено в корзину');
+    
+    // Haptic feedback
+    if ((window as any).Telegram?.WebApp?.HapticFeedback?.impactOccurred) {
+      (window as any).Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
+  };
+
+  const handleRemoveFromCart = (item: typeof MENU[0]) => {
+    remove(item.id);
+    
+    // Haptic feedback
+    if ((window as any).Telegram?.WebApp?.HapticFeedback?.selectionChanged) {
+      (window as any).Telegram.WebApp.HapticFeedback.selectionChanged();
+    }
   };
 
   return (
@@ -46,23 +75,38 @@ export const MenuPage: React.FC = () => {
       <SegmentedChips 
         tabs={tabs} 
         active={selectedCategory} 
-        onChange={(key) => setSelectedCategory(key as 'Pizza' | 'Vegan')} 
+        onChange={handleCategoryChange} 
       />
       <h2 className="section-title">{selectedCategory.toUpperCase()}</h2>
       <div className="section-rule"></div>
       
-      {filteredMenu.map(item => (
-        <DishCard 
-          key={item.id}
-          dish={{
-            id: item.id,
-            name: item.name,
-            desc: item.desc,
-            price: item.price
-          }} 
-          onAdd={() => handleAddToCart(item)}
-        />
-      ))}
+      <div className="list-anim" style={{ opacity: listOpacity }}>
+        {isLoading ? (
+          // Skeleton loading
+          <>
+            <div className="skel"></div>
+            <div className="skel"></div>
+            <div className="skel"></div>
+          </>
+        ) : (
+          filteredMenu.map(item => (
+            <div key={item.id} className="row">
+              <div>
+                <h3>{item.name}</h3>
+                <p className="desc">{item.desc}</p>
+              </div>
+              <div className="aside">
+                <div className="price">{item.price.toLocaleString('ru-RU')} ₽</div>
+                <QtyButton
+                  itemId={item.id}
+                  onAdd={() => handleAddToCart(item)}
+                  onRemove={() => handleRemoveFromCart(item)}
+                />
+              </div>
+            </div>
+          ))
+        )}
+      </div>
       
       {toastMessage && (
         <Toast 

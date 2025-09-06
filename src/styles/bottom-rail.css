@@ -24,11 +24,13 @@
   content:''; 
   position:absolute; 
   top:-1px; /* вместо top:0 — поднять линию к границе меню */
-  left:0; right:0;
+  left:16px; right:16px;
   height:2px;
   background:var(--ink);
   border-radius:1px;
+  transform-origin:left; transform: scaleX(0); transition: transform 120ms ease;
 }
+.tab.is-active.activate::before{ transform: scaleX(1); }
 
 .badge{
   position:absolute; top:6px; right:calc(50% - 10px); transform:translateX(10px);

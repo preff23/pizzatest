@@ -117,6 +117,15 @@ const App: React.FC = () => {
     } else {
       console.log('Telegram WebApp not available - running in browser mode');
     }
+
+    // Scroll effect for header
+    const handleScroll = () => {
+      const scrolled = window.scrollY > 16;
+      document.body.classList.toggle('scrolled', scrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const renderCurrentPage = () => {
