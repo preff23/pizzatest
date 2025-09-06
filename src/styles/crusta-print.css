@@ -20,10 +20,7 @@
 html,body,#root{height:100%}
 body{
   margin:0; 
-  background: var(--bg) url('/liquidchrome.png') no-repeat right top;
-  background-size: 70% auto;
-  background-attachment: fixed;
-  background-position: right calc(var(--headerH, 56px) + 10px);
+  background: var(--bg);
   color:var(--ink);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
@@ -47,11 +44,6 @@ body::before {
 
 /* Mobile optimizations for Telegram WebApp */
 @media (max-width: 768px) {
-  body {
-    background-size: 60% auto;
-    background-position: right calc(var(--headerH, 56px) + 5px);
-  }
-  
   body::before {
     width: 60%;
     background-size: 60% auto;
@@ -131,10 +123,6 @@ body::before {
 
 /* Extra small screens (iPhone SE, etc.) */
 @media (max-width: 375px) {
-  body {
-    background-size: 50% auto;
-  }
-  
   body::before {
     width: 50%;
     background-size: 50% auto;
