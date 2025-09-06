@@ -20,12 +20,29 @@
 html,body,#root{height:100%}
 body{
   margin:0; 
-  background: var(--bg) url('/liquidchrome.png') no-repeat right center;
-  background-size: 50% auto;
+  background: var(--bg) url('/liquidchrome.png') no-repeat right top;
+  background-size: 70% auto;
   background-attachment: fixed;
+  background-position: right calc(var(--headerH, 56px) + 10px);
   color:var(--ink);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+
+/* Background image blur effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 70%;
+  height: 100vh;
+  background: url('/liquidchrome.png') no-repeat right top;
+  background-size: 70% auto;
+  background-position: right calc(var(--headerH, 56px) + 10px);
+  filter: blur(8px);
+  z-index: -1;
+  pointer-events: none;
 }
 .container{ max-width:560px; margin:0 auto; padding:16px 16px 100px; }
 
