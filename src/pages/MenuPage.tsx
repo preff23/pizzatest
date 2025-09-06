@@ -10,7 +10,7 @@ export const MenuPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<'Pizza' | 'Vegan'>('Pizza');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [listOpacity, setListOpacity] = useState(1);
+  const [listVisible, setListVisible] = useState(true);
 
   const filteredMenu = useMemo(() => {
     return MENU.filter(item => {
@@ -35,15 +35,15 @@ export const MenuPage: React.FC = () => {
   const handleCategoryChange = (key: string) => {
     const newCategory = key as 'Pizza' | 'Vegan';
     
-    // Crossfade animation
-    setListOpacity(0);
+    // Hide list with animation
+    setListVisible(false);
     setIsLoading(true);
     
     setTimeout(() => {
       setSelectedCategory(newCategory);
-      setListOpacity(1);
+      setListVisible(true);
       setIsLoading(false);
-    }, 120);
+    }, 200);
   };
 
   const handleAddToCart = (item: typeof MENU[0]) => {
@@ -80,7 +80,7 @@ export const MenuPage: React.FC = () => {
       <h2 className="section-title">{selectedCategory.toUpperCase()}</h2>
       <div className="section-rule"></div>
       
-      <div className="list-anim" style={{ opacity: listOpacity }}>
+      <div className={`list-anim ${listVisible ? 'show' : ''}`}>
         {isLoading ? (
           // Skeleton loading
           <>

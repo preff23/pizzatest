@@ -17,6 +17,14 @@ export default function DishCard({ dish, onAdd }: Props) {
     if (window.Telegram?.WebApp?.HapticFeedback?.impactOccurred) {
       window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
     }
+    
+    // Bounce animation
+    const button = document.querySelector('.btn-add') as HTMLElement;
+    if (button) {
+      button.classList.add('bounce');
+      setTimeout(() => button.classList.remove('bounce'), 150);
+    }
+    
     onAdd();
   };
 
