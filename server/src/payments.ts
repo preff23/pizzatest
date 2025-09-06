@@ -1,9 +1,6 @@
 import { LabeledPrice } from 'telegraf/types';
 import { Telegraf } from 'telegraf';
 
-const CURRENCY = process.env.PAYMENTS_CURRENCY || 'RUB';
-const PROVIDER_TOKEN = process.env.TG_PROVIDER_TOKEN!;
-
 // Простое хранилище заказов в памяти (в реальном проекте используйте БД)
 const orders = new Map<number, any>();
 const carts = new Map<number, any>();
@@ -38,24 +35,36 @@ export function markOrderPaid(data: {
 export function buildInvoice(userId: number, cart: any) {
   const prices: LabeledPrice[] = cart.items.map((it: any) => ({
     label: it.name,
-    amount: toKopecks(it.price * it.qty || it.price)
+    amount: toKopecks((it.price || 0) * (it.qty || 1))
   }));
   
   const payload = `order:${cart.id}|user:${userId}|ts:${Date.now()}`;
   
-  return {
+  const invoice = {
     title: 'CRUSTA MIA — заказ',
     description: `Оплата заказа #${cart.id}`,
     payload,
-    provider_token: PROVIDER_TOKEN,
-    currency: CURRENCY,
-    prices: prices.length ? prices : [{label: 'Итого', amount: toKopecks(cart.total)}],
+    provider_token: process.env.TG_PROVIDER_TOKEN!,
+    currency: process.env.PAYMENTS_CURRENCY || 'RUB',
+    prices: prices.length ? prices : [{ label: 'Итого', amount: toKopecks(cart.total || 0) }],
     start_parameter: 'crusta_checkout',
     is_flexible: false,
     need_name: false,
     need_phone_number: false,
     need_email: false,
   };
+  
+  // Логируем сформированный инвойс (без токенов)
+  console.log('Invoice built:', {
+    title: invoice.title,
+    description: invoice.description,
+    currency: invoice.currency,
+    prices: invoice.prices,
+    payload: invoice.payload,
+    userId
+  });
+  
+  return invoice;
 }
 
 // Отправка инвойса пользователю
@@ -65,20 +74,29 @@ export async function sendInvoiceToUser(userId: number, cart: any, bot: Telegraf
   }
   
   const invoice = buildInvoice(userId, cart);
-  return bot.api.sendInvoice(userId, invoice);
+  
+  console.log('Sending invoice to user:', {
+    userId,
+    title: invoice.title,
+    currency: invoice.currency,
+    prices: invoice.prices,
+    payload: invoice.payload
+  });
+  
+  return bot.telegram.sendInvoice(userId, invoice);
 }
 
 // pre_checkout → разрешаем платёж (при желании сверяем сумму)
 export async function onPreCheckout(ctx: any) {
   const query = ctx.update.pre_checkout_query;
-  const receivedAt = new Date().toISOString();
+  const receivedAt = Date.now();
   
   console.log('Pre-checkout query received:', {
-    timestamp: receivedAt,
-    queryId: query.id,
-    totalAmount: query.total_amount,
+    id: query.id,
+    total_amount: query.total_amount,
     currency: query.currency,
-    payload: query.invoice_payload
+    payload: query.invoice_payload,
+    t_received: new Date(receivedAt).toISOString()
   });
   
   // Проверяем сумму (опционально)
@@ -98,21 +116,21 @@ export async function onPreCheckout(ctx: any) {
         queryTotal: query.total_amount / 100
       });
       
-      const answeredAt = new Date().toISOString();
+      const answeredAt = Date.now();
       await ctx.answerPreCheckoutQuery(false, 'Сумма изменилась. Обновите заказ.');
       console.log('Pre-checkout query answered (false):', {
-        timestamp: answeredAt,
-        responseTime: new Date().getTime() - new Date(receivedAt).getTime() + 'ms'
+        t_answered: new Date(answeredAt).toISOString(),
+        delta_ms: answeredAt - receivedAt
       });
       return;
     }
   }
   
-  const answeredAt = new Date().toISOString();
+  const answeredAt = Date.now();
   await ctx.answerPreCheckoutQuery(true);
   console.log('Pre-checkout query answered (true):', {
-    timestamp: answeredAt,
-    responseTime: new Date().getTime() - new Date(receivedAt).getTime() + 'ms'
+    t_answered: new Date(answeredAt).toISOString(),
+    delta_ms: answeredAt - receivedAt
   });
 }
 
@@ -122,12 +140,11 @@ export async function onSuccessfulPayment(ctx: any) {
   const payload = sp.invoice_payload || '';
   
   console.log('Successful payment received:', {
-    timestamp: new Date().toISOString(),
-    payload,
-    totalAmount: sp.total_amount,
+    total_amount: sp.total_amount,
     currency: sp.currency,
-    telegramChargeId: sp.telegram_payment_charge_id,
-    providerChargeId: sp.provider_payment_charge_id
+    telegram_charge_id: sp.telegram_payment_charge_id,
+    provider_charge_id: sp.provider_payment_charge_id,
+    payload
   });
   
   const orderIdMatch = payload.match(/order:(\d+)/);
@@ -167,21 +184,9 @@ export async function onSuccessfulPayment(ctx: any) {
   // Очищаем корзину пользователя
   carts.delete(userId);
   
-  // Отправляем чек-сообщение
-  const receiptMessage = `✅ Оплата прошла успешно!
-
-📋 Детали заказа:
-💰 Сумма: ${(sp.total_amount / 100).toLocaleString('ru-RU')} ${sp.currency}
-🆔 ID платежа: ${sp.telegram_payment_charge_id}
-📅 Дата: ${new Date().toLocaleString('ru-RU')}
-
-Спасибо за заказ! Ваша пицца будет готова в течение 30-40 минут. 🍕
-
-Приятного аппетита! 😊`;
+  await ctx.reply('Оплата прошла успешно. Спасибо! 🍕');
   
-  await ctx.reply(receiptMessage);
-  
-  console.log('Order marked as paid and receipt sent:', {
+  console.log('Order marked as paid:', {
     orderId,
     userId,
     total: sp.total_amount / 100,

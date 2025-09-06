@@ -20,7 +20,12 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN!);
 
 // Регистрируем обработчики платежей
 bot.on('pre_checkout_query', onPreCheckout);
-bot.on('message:successful_payment', onSuccessfulPayment);
+bot.on('message', (ctx, next) => {
+  if (ctx.message && 'successful_payment' in ctx.message) {
+    return onSuccessfulPayment(ctx);
+  }
+  return next();
+});
 
 // HTTP роуты
 app.post('/api/pay', payHandler);
