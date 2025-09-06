@@ -35,32 +35,30 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentPage, onPageChange 
 
   return (
     <nav className="bottom-bar" role="navigation" aria-label="Навигация">
-      <div className="tabs">
-        <button 
-          className={`tab ${currentPage === 'menu' ? 'is-active' : ''}`} 
-          onClick={() => go('menu')} 
-          aria-current={currentPage === 'menu' ? 'page' : undefined}
-        >
-          <IconMenu /><span>Меню</span>
-        </button>
+      <button
+        className={`tab ${currentPage === 'menu' ? 'is-active' : ''}`}
+        onClick={() => go('menu')}
+        aria-current={currentPage === 'menu' ? 'page' : undefined}
+      >
+        <IconMenu /><span>Меню</span>
+      </button>
 
-        <button 
-          className={`tab ${currentPage === 'cart' ? 'is-active' : ''}`} 
-          onClick={() => go('cart')} 
-          aria-current={currentPage === 'cart' ? 'page' : undefined}
-        >
-          <IconCart /><span>Корзина</span>
-          {totalQty > 0 && <span className="badge">{Math.min(totalQty, 99)}</span>}
-        </button>
+      <button
+        className={`tab ${currentPage === 'cart' ? 'is-active' : ''}`}
+        onClick={() => go('cart')}
+        aria-current={currentPage === 'cart' ? 'page' : undefined}
+      >
+        <IconCart /><span>Корзина</span>
+        {totalQty > 0 && <span className="badge">{Math.min(totalQty, 99)}</span>}
+      </button>
 
-        <button 
-          className={`tab ${currentPage === 'status' ? 'is-active' : ''}`} 
-          onClick={() => go('status')} 
-          aria-current={currentPage === 'status' ? 'page' : undefined}
-        >
-          <IconCheck /><span>Статус</span>
-        </button>
-      </div>
+      <button
+        className={`tab ${currentPage === 'status' ? 'is-active' : ''}`}
+        onClick={() => go('status')}
+        aria-current={currentPage === 'status' ? 'page' : undefined}
+      >
+        <IconCheck /><span>Статус</span>
+      </button>
     </nav>
   );
 };
