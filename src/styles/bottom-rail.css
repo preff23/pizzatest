@@ -19,16 +19,16 @@
 .tab svg{ width:22px; height:22px; stroke:currentColor; stroke-width:2; fill:none;
   stroke-linecap:round; stroke-linejoin:round; }
 
-.tab.is-active{ color:var(--ink); font-weight:700; }
+.tab.is-active{ color:#000; font-weight:700; }
 .tab.is-active::before{
   content:''; 
   position:absolute; 
-  top:-1px; /* вместо top:0 — поднять линию к границе меню */
+  top:-1px;
   left:16px; right:16px;
   height:2px;
-  background:var(--ink);
+  background:#000;
   border-radius:1px;
-  transform-origin:left; transform: scaleX(0); transition: transform 120ms ease;
+  transform-origin:left; transform: scaleX(0); transition: transform 120ms ease-in-out;
 }
 .tab.is-active.activate::before{ transform: scaleX(1); }
 
@@ -40,6 +40,3 @@
 
 .tab:active{ opacity:.85; }
 .tab:focus-visible{ outline:2px solid rgba(14,17,20,.25); outline-offset:2px; }
-@media (prefers-color-scheme: dark){
-  .tab:focus-visible{ outline:2px solid rgba(238,241,245,.35); }
-}

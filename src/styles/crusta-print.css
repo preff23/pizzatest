@@ -1,4 +1,4 @@
-/* ===== Theme: Crusta Print ===== */
+/* ===== Theme: Crusta Print (Always Light) ===== */
 :root{
   --bg:#F3F3F3; --surface:#FFFFFF; --ink:#0E1114; --muted:#616975;
   --line:#E2E4E8; --accent:#0E1114; --accent-pressed:#2B2F35;
@@ -10,17 +10,10 @@
   --headerH: 56px; --chipsH: 40px;
 }
 
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#141618; --surface:#181B1F; --ink:#EEF1F5; --muted:#96A0AE;
-    --line:#252A31; --accent:#EEF1F5; --accent-pressed:#C8D1DD;
-  }
-}
-
 html,body,#root{height:100%}
 body{
-  margin:0; 
-  background: var(--bg);
+  margin:0;
+  background: linear-gradient(180deg, #f9f9f9 0%, #f3f3f3 100%);
   color:var(--ink);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
@@ -31,13 +24,14 @@ body::before {
   content: '';
   position: fixed;
   top: 0;
-  right: -30%;
+  right: -45%;
   width: 80%;
   height: 100vh;
   background: url('/liquidchrome.png') no-repeat right top;
   background-size: 80% auto;
   background-position: right calc(var(--headerH, 56px) + 10px);
-  filter: blur(3px);
+  filter: blur(2px);
+  opacity: 0.18;
   z-index: -1;
   pointer-events: none;
 }
@@ -45,11 +39,12 @@ body::before {
 /* Mobile optimizations for Telegram WebApp */
 @media (max-width: 768px) {
   body::before {
-    right: -25%;
+    right: -40%;
     width: 72%;
     background-size: 72% auto;
     background-position: right calc(var(--headerH, 56px) + 5px);
     filter: blur(2px);
+    opacity: 0.18;
   }
   
   .container {
@@ -125,10 +120,11 @@ body::before {
 /* Extra small screens (iPhone SE, etc.) */
 @media (max-width: 375px) {
   body::before {
-    right: -20%;
+    right: -35%;
     width: 64%;
     background-size: 64% auto;
-    filter: blur(1px);
+    filter: blur(2px);
+    opacity: 0.18;
   }
   
   .container {
@@ -180,7 +176,12 @@ body::before {
   padding:8px 14px; border-radius:999px; border:1px solid var(--line);
   background:var(--surface); color:var(--muted); font-weight:600; cursor:pointer;
 }
-.chip.active{ border-color:var(--ink); color:var(--ink); }
+.chip.active{ 
+  background: #e9e9e9;
+  font-weight: 600;
+  border: 1px solid #d0d0d0;
+  color: var(--ink);
+}
 .chip .count{ margin-left:8px; opacity:.7; }
 
 /* Section heading */
@@ -218,8 +219,13 @@ body::before {
   width:36px; height:36px; border-radius:50%;
   background:transparent; color:var(--accent); border:1.5px solid var(--accent);
   font-size:20px; line-height:1; display:inline-flex; align-items:center; justify-content:center;
+  transition: transform 120ms ease;
 }
-.btn-add:active{ background:var(--accent); color:var(--surface); }
+.btn-add:active{ 
+  transform: scale(0.95); 
+  background:var(--accent); 
+  color:var(--surface); 
+}
 
 /* Bottom nav */
 .bottom-bar{
@@ -228,13 +234,10 @@ body::before {
 }
 .tabs{ display:flex; justify-content:space-around; }
 .tab{ display:flex; flex-direction:column; align-items:center; gap:2px; color:var(--muted); font-size:12px; }
-.tab.active{ color:var(--ink); }
+.tab.active{ color:#000; font-weight:600; }
 
 /* A11y */
 button:focus-visible{ outline:2px solid rgba(14,17,20,.25); outline-offset:2px; }
-@media (prefers-color-scheme: dark){
-  button:focus-visible{ outline:2px solid rgba(238,241,245,.35); }
-}
 
 /* Qty Button */
 .btn-add{ 
