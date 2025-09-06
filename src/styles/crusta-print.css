@@ -44,6 +44,136 @@ body::before {
   z-index: -1;
   pointer-events: none;
 }
+
+/* Mobile optimizations for Telegram WebApp */
+@media (max-width: 768px) {
+  body {
+    background-size: 60% auto;
+    background-position: right calc(var(--headerH, 56px) + 5px);
+  }
+  
+  body::before {
+    width: 60%;
+    background-size: 60% auto;
+    background-position: right calc(var(--headerH, 56px) + 5px);
+    filter: blur(6px);
+  }
+  
+  .container {
+    padding: 12px 12px 100px;
+  }
+  
+  .header-inner {
+    padding: 8px 12px;
+  }
+  
+  .brand {
+    font-size: 18px;
+  }
+  
+  .subtitle {
+    font-size: 11px;
+  }
+  
+  .chips {
+    margin: 12px 0 6px;
+  }
+  
+  .chip {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .section-title {
+    font-size: 16px;
+    margin: 20px 0 6px;
+  }
+  
+  .row {
+    padding: 12px 0;
+    gap: 12px;
+  }
+  
+  .row h3 {
+    font-size: 15px;
+  }
+  
+  .row .desc {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  
+  .price {
+    font-size: 15px;
+  }
+  
+  .btn-add {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+  
+  .qty {
+    padding: 3px 6px;
+    gap: 6px;
+  }
+  
+  .qbtn {
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+  
+  .qval {
+    font-size: 13px;
+  }
+}
+
+/* Extra small screens (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  body {
+    background-size: 50% auto;
+  }
+  
+  body::before {
+    width: 50%;
+    background-size: 50% auto;
+    filter: blur(4px);
+  }
+  
+  .container {
+    padding: 10px 10px 100px;
+  }
+  
+  .brand {
+    font-size: 16px;
+  }
+  
+  .subtitle {
+    font-size: 10px;
+  }
+  
+  .chip {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+  
+  .section-title {
+    font-size: 14px;
+  }
+  
+  .row h3 {
+    font-size: 14px;
+  }
+  
+  .row .desc {
+    font-size: 12px;
+  }
+  
+  .price {
+    font-size: 14px;
+  }
+}
 .container{ max-width:560px; margin:0 auto; padding:16px 16px 100px; }
 
 .header{
@@ -157,6 +287,43 @@ button:focus-visible{ outline:2px solid rgba(14,17,20,.25); outline-offset:2px; 
 .scrolled .header{ box-shadow: 0 1px 0 rgba(0,0,0,.06); }
 @media (prefers-color-scheme: dark){
   .scrolled .header{ box-shadow: 0 1px 0 rgba(255,255,255,.06); }
+}
+
+/* Telegram WebApp specific optimizations */
+@media (max-width: 768px) {
+  /* Ensure proper viewport handling in Telegram */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  /* Optimize touch targets for mobile */
+  .btn-add, .qbtn, .chip, .tab {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improve scrolling performance */
+  .container {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Optimize blur performance on mobile */
+  body::before {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
+  /* Better spacing for mobile navigation */
+  .bottom-bar {
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+  
+  /* Optimize text rendering on mobile */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 /* Utilities */
