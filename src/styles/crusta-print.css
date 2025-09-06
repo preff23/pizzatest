@@ -19,7 +19,11 @@
 
 html,body,#root{height:100%}
 body{
-  margin:0; background:var(--bg); color:var(--ink);
+  margin:0; 
+  background: var(--bg) url('/liquidchrome.png') no-repeat right center;
+  background-size: 50% auto;
+  background-attachment: fixed;
+  color:var(--ink);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
@@ -44,7 +48,10 @@ body{
 
 /* Section heading */
 .section-title{
-  position:sticky; top: calc(var(--headerH, 64px) + var(--chipsH, 44px) + 8px); z-index:5; background: var(--bg);
+  position: static;
+  top: auto;
+  z-index: auto;
+  background: transparent;
   font-size:18px; font-weight:900; letter-spacing:.06em; text-transform:uppercase;
   margin:24px 0 8px;
 }
