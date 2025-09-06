@@ -20,7 +20,7 @@ export const CartPage: React.FC = () => {
       const serverUrl = import.meta.env.VITE_SERVER_URL || 
         (import.meta.env.DEV 
           ? 'http://localhost:3001'  // Локальная разработка
-          : 'https://crusta-mia-server.vercel.app');  // Продакшен на Vercel
+          : 'https://pizzaback-one.vercel.app');  // Продакшен на Vercel
       
       // Отправляем запрос на сервер для создания инвойса
       const response = await fetch(`${serverUrl}/api/pay`, {
