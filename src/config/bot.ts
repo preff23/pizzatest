@@ -1,7 +1,7 @@
 // Конфигурация Telegram бота
 export const BOT_CONFIG = {
   token: (import.meta as any).env?.VITE_BOT_TOKEN || '8276450519:AAElkwWgkmSOtU1aYGv_NrhPUuDT_SgAH2g',
-  webAppUrl: (import.meta as any).env?.VITE_WEBAPP_URL || 'https://your-domain.com',
+  webAppUrl: (import.meta as any).env?.VITE_WEBAPP_URL || 'https://preff23.github.io/pizzabot',
   botUsername: (import.meta as any).env?.VITE_BOT_USERNAME || 'crusta_mia_bot',
   devMode: (import.meta as any).env?.VITE_DEV_MODE === 'true',
 };
