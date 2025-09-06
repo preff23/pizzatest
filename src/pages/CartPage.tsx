@@ -1,6 +1,5 @@
 import React from 'react';
 import { useCart } from '../store/cartContext';
-import { sendInvoice } from '../config/bot';
 import CurvedSection from '../components/CurvedSection';
 
 export const CartPage: React.FC = () => {
@@ -9,30 +8,49 @@ export const CartPage: React.FC = () => {
   const handleCheckout = async () => {
     try {
       // Получаем данные пользователя из Telegram WebApp
-      const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
-      const chatId = user?.id?.toString();
+      const tg = (window as any).Telegram?.WebApp;
+      const userId = tg?.initDataUnsafe?.user?.id;
       
-      if (!chatId) {
+      if (!userId) {
         alert('Не удалось получить данные пользователя');
         return;
       }
       
-      // Отправляем инвойс через бота
-      const result = await sendInvoice(chatId, items, totalPrice);
+      // Отправляем запрос на сервер для создания инвойса
+      const response = await fetch('/api/pay', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          userId,
+          cart: {
+            id: Date.now(),
+            items,
+            total: totalPrice
+          }
+        })
+      });
       
-      if (result.success) {
-        // Показываем уведомление об успехе
-        if (window.Telegram?.WebApp?.showAlert) {
-          window.Telegram.WebApp.showAlert('Заказ отправлен на оплату!');
-        } else {
-          alert('Заказ отправлен на оплату!');
-        }
-        
-        // Очищаем корзину после успешной отправки
-        clear();
-      } else {
-        throw new Error('Failed to send invoice');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to send invoice');
       }
+      
+      // Показываем уведомление об успехе
+      if (tg?.showAlert) {
+        tg.showAlert('Счёт отправлен в чат. Откройте диалог с ботом, чтобы оплатить.');
+      } else {
+        alert('Счёт отправлен в чат. Откройте диалог с ботом, чтобы оплатить.');
+      }
+      
+      // Тактильная обратная связь
+      if (tg?.HapticFeedback?.notificationOccurred) {
+        tg.HapticFeedback.notificationOccurred('success');
+      }
+      
+      // Очищаем корзину после успешной отправки
+      clear();
     } catch (error) {
       console.error('Error during checkout:', error);
       alert('Ошибка при оформлении заказа. Попробуйте еще раз.');
