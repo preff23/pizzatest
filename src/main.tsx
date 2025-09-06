@@ -7,8 +7,8 @@ import { MenuPage } from './pages/MenuPage';
 import { CartPage } from './pages/CartPage';
 import { StatusPage } from './pages/StatusPage';
 import { Page } from './types';
-import './styles/minimal.css';
-import './styles/curves.css';
+import './styles/crusta-print.css';
+import './styles/bottom-rail.css';
 
 // Расширяем Window интерфейс для Telegram WebApp
 declare global {

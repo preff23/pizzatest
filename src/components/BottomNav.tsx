@@ -7,46 +7,60 @@ interface BottomNavProps {
   onPageChange: (page: Page) => void;
 }
 
+const IconMenu = () => (
+  <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+);
+const IconCart = () => (
+  <svg viewBox="0 0 24 24">
+    <path d="M3 4h2l2 11h11l2-8H6" />
+    <circle cx="9" cy="19" r="1.5" />
+    <circle cx="17" cy="19" r="1.5" />
+  </svg>
+);
+const IconCheck = () => (
+  <svg viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8" />
+    <path d="M9 12l2 2 4-4" />
+  </svg>
+);
+
 export const BottomNav: React.FC<BottomNavProps> = ({ currentPage, onPageChange }) => {
-  const { totalItems } = useCart();
+  const { items } = useCart();
+  const totalQty = items.reduce((s, i) => s + i.qty, 0);
+
+  const go = (k: Page) => {
+    onPageChange(k);
+    (window as any).Telegram?.WebApp?.HapticFeedback?.selectionChanged?.();
+  };
 
   return (
-    <div className="bottom-bar">
+    <nav className="bottom-bar" role="navigation" aria-label="Навигация">
       <div className="tabs">
-        <button
-          className={`tab ${currentPage === 'menu' ? 'active' : ''}`}
-          onClick={() => onPageChange('menu')}
+        <button 
+          className={`tab ${currentPage === 'menu' ? 'is-active' : ''}`} 
+          onClick={() => go('menu')} 
+          aria-current={currentPage === 'menu' ? 'page' : undefined}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M3 12h18M3 6h18M3 18h18"/>
-          </svg>
-          <span>Меню</span>
+          <IconMenu /><span>Меню</span>
         </button>
-        
-        <button
-          className={`tab ${currentPage === 'cart' ? 'active' : ''}`}
-          onClick={() => onPageChange('cart')}
-          style={{ position: 'relative' }}
+
+        <button 
+          className={`tab ${currentPage === 'cart' ? 'is-active' : ''}`} 
+          onClick={() => go('cart')} 
+          aria-current={currentPage === 'cart' ? 'page' : undefined}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6"/>
-          </svg>
-          {totalItems > 0 && (
-            <span className="badge">{totalItems}</span>
-          )}
-          <span>Корзина</span>
+          <IconCart /><span>Корзина</span>
+          {totalQty > 0 && <span className="badge">{Math.min(totalQty, 99)}</span>}
         </button>
-        
-        <button
-          className={`tab ${currentPage === 'status' ? 'active' : ''}`}
-          onClick={() => onPageChange('status')}
+
+        <button 
+          className={`tab ${currentPage === 'status' ? 'is-active' : ''}`} 
+          onClick={() => go('status')} 
+          aria-current={currentPage === 'status' ? 'page' : undefined}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <span>Статус</span>
+          <IconCheck /><span>Статус</span>
         </button>
       </div>
-    </div>
+    </nav>
   );
 };

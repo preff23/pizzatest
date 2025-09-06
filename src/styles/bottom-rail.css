@@ -1,0 +1,35 @@
+/* Bottom rail */
+.bottom-bar{
+  position:fixed; left:0; right:0; bottom:0; z-index:10;
+  background:var(--surface); border-top:1px solid var(--line);
+  padding-bottom:max(6px, env(safe-area-inset-bottom));
+  height:56px;
+}
+.tabs{ height:100%; display:flex; align-items:center; justify-content:space-around; }
+
+.tab{
+  position:relative; flex:1; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; color:var(--muted); font-size:12px; font-weight:600;
+  -webkit-tap-highlight-color:transparent;
+}
+.tab svg{ width:22px; height:22px; stroke:currentColor; stroke-width:2; fill:none;
+  stroke-linecap:round; stroke-linejoin:round; }
+
+.tab.is-active{ color:var(--ink); font-weight:700; }
+.tab.is-active::before{
+  content:''; position:absolute; top:0; left:16px; right:16px; height:2px;
+  background:var(--ink); border-radius:1px;
+}
+
+.badge{
+  position:absolute; top:6px; right:calc(50% - 10px); transform:translateX(10px);
+  min-width:18px; height:18px; padding:0 6px; border-radius:9px;
+  background:var(--ink); color:var(--surface); font-size:11px; line-height:18px;
+}
+
+.tab:active{ opacity:.85; }
+.tab:focus-visible{ outline:2px solid rgba(14,17,20,.25); outline-offset:2px; }
+@media (prefers-color-scheme: dark){
+  .tab:focus-visible{ outline:2px solid rgba(238,241,245,.35); }
+}

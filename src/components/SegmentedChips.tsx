@@ -2,6 +2,7 @@
 type Tab = {
   key: string;
   label: string;
+  count?: number;
 };
 
 type Props = {
@@ -20,6 +21,9 @@ export default function SegmentedChips({ tabs, active, onChange }: Props) {
           onClick={() => onChange(tab.key)}
         >
           {tab.label}
+          {tab.count !== undefined && (
+            <span className="count">{tab.count}</span>
+          )}
         </button>
       ))}
     </div>

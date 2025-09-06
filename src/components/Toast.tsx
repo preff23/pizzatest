@@ -6,7 +6,7 @@ type ToastProps = {
   onClose?: () => void;
 };
 
-export default function Toast({ message, duration = 1500, onClose }: ToastProps) {
+export default function Toast({ message, duration = 1200, onClose }: ToastProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {

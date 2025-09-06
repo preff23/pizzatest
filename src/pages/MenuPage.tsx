@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import SegmentedChips from '../components/SegmentedChips';
-import CurvedSection from '../components/CurvedSection';
 import DishCard from '../components/DishCard';
 import Toast from '../components/Toast';
 import { MENU } from '../data/menu';
@@ -19,8 +18,16 @@ export const MenuPage: React.FC = () => {
   }, [selectedCategory]);
 
   const tabs = [
-    { key: 'Pizza', label: 'Pizza' },
-    { key: 'Vegan', label: 'Vegan' },
+    { 
+      key: 'Pizza', 
+      label: 'Pizza', 
+      count: MENU.filter(item => item.category === 'Pizza').length 
+    },
+    { 
+      key: 'Vegan', 
+      label: 'Vegan', 
+      count: MENU.filter(item => item.category === 'Vegan').length 
+    },
   ];
 
   const handleAddToCart = (item: typeof MENU[0]) => {
@@ -31,7 +38,7 @@ export const MenuPage: React.FC = () => {
     });
     
     // Показываем Toast
-    setToastMessage('Добавлено');
+    setToastMessage('Добавлено в корзину');
   };
 
   return (
@@ -41,21 +48,21 @@ export const MenuPage: React.FC = () => {
         active={selectedCategory} 
         onChange={(key) => setSelectedCategory(key as 'Pizza' | 'Vegan')} 
       />
-      <div className="section-title">{selectedCategory.toUpperCase()}</div>
-      <CurvedSection>
-        {filteredMenu.map(item => (
-          <DishCard 
-            key={item.id}
-            dish={{
-              id: item.id,
-              name: item.name,
-              desc: item.desc,
-              price: item.price
-            }} 
-            onAdd={() => handleAddToCart(item)}
-          />
-        ))}
-      </CurvedSection>
+      <h2 className="section-title">{selectedCategory.toUpperCase()}</h2>
+      <div className="section-rule"></div>
+      
+      {filteredMenu.map(item => (
+        <DishCard 
+          key={item.id}
+          dish={{
+            id: item.id,
+            name: item.name,
+            desc: item.desc,
+            price: item.price
+          }} 
+          onAdd={() => handleAddToCart(item)}
+        />
+      ))}
       
       {toastMessage && (
         <Toast 
