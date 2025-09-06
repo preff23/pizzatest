@@ -16,8 +16,14 @@ export const CartPage: React.FC = () => {
         return;
       }
       
+      // Определяем URL сервера в зависимости от окружения
+      const serverUrl = import.meta.env.VITE_SERVER_URL || 
+        (import.meta.env.DEV 
+          ? 'http://localhost:3001'  // Локальная разработка
+          : 'https://crusta-mia-server.vercel.app');  // Продакшен на Vercel
+      
       // Отправляем запрос на сервер для создания инвойса
-      const response = await fetch('/api/pay', {
+      const response = await fetch(`${serverUrl}/api/pay`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
