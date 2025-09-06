@@ -31,11 +31,11 @@ body::before {
   content: '';
   position: fixed;
   top: 0;
-  right: -70%;
-  width: 140%;
+  right: -100%;
+  width: 200%;
   height: 100vh;
   background: url('/liquidchrome.png') no-repeat right top;
-  background-size: 140% auto;
+  background-size: 200% auto;
   background-position: right calc(var(--headerH, 56px) + 10px);
   filter: blur(5px);
   z-index: -1;
@@ -45,9 +45,9 @@ body::before {
 /* Mobile optimizations for Telegram WebApp */
 @media (max-width: 768px) {
   body::before {
-    right: -65%;
-    width: 120%;
-    background-size: 120% auto;
+    right: -95%;
+    width: 180%;
+    background-size: 180% auto;
     background-position: right calc(var(--headerH, 56px) + 5px);
     filter: blur(4px);
   }
@@ -125,9 +125,9 @@ body::before {
 /* Extra small screens (iPhone SE, etc.) */
 @media (max-width: 375px) {
   body::before {
-    right: -60%;
-    width: 100%;
-    background-size: 100% auto;
+    right: -90%;
+    width: 160%;
+    background-size: 160% auto;
     filter: blur(3px);
   }
   
