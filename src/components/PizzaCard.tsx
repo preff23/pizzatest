@@ -27,11 +27,11 @@ export const PizzaCard: React.FC<PizzaCardProps> = ({ item }) => {
   return (
     <div className="card">
       <h3>{item.name}</h3>
-      <p className="desc">{item.desc}</p>
-      <div className="card-footer">
+      <div className="desc">{item.desc}</div>
+      <div className="row">
         <span className="price">{item.price} ₽</span>
         <button 
-          className="btn-cta"
+          className="btn"
           onClick={handleAddToCart}
         >
           Добавить в корзину

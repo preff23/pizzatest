@@ -8,10 +8,10 @@ export const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="header-inner">
-        <h1 className="brand">CRUSTA MIA</h1>
-        <p className="subtitle">Neopolitan Pizza • Espresso Bar</p>
+        <div className="brand">CRUSTA MIA</div>
+        <div className="subtitle">Neopolitan Pizza • Espresso Bar</div>
         {userName && (
-          <p className="welcome">Добро пожаловать, {userName}!</p>
+          <div className="welcome">Добро пожаловать, {userName}!</div>
         )}
       </div>
     </header>

@@ -7,7 +7,7 @@ import { MenuPage } from './pages/MenuPage';
 import { CartPage } from './pages/CartPage';
 import { StatusPage } from './pages/StatusPage';
 import { Page } from './types';
-import './styles/chrome-theme.css';
+import './styles/minimal.css';
 
 // Расширяем Window интерфейс для Telegram WebApp
 declare global {
@@ -134,7 +134,6 @@ const App: React.FC = () => {
   return (
     <CartProvider>
       <div className="app">
-        <div className="chrome-noise" />
         <Header />
         <main className="container">
           {renderCurrentPage()}

@@ -59,21 +59,22 @@ export const CartPage: React.FC = () => {
             
             <div className="cart-item__controls">
               <button
-                className="cart-item__button cart-item__button--dec"
+                className="icon-btn"
                 onClick={() => dec(item.id)}
               >
                 −
               </button>
               <span className="cart-item__qty">{item.qty}</span>
               <button
-                className="cart-item__button cart-item__button--inc"
+                className="icon-btn"
                 onClick={() => inc(item.id)}
               >
                 +
               </button>
               <button
-                className="cart-item__button cart-item__button--remove"
+                className="icon-btn"
                 onClick={() => remove(item.id)}
+                style={{ color: 'var(--danger)' }}
               >
                 ×
               </button>

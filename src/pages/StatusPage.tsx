@@ -23,7 +23,7 @@ export const StatusPage: React.FC = () => {
     <div>
       <div className="order-status">
         <h2>Статус заказа</h2>
-        <div className={`status-badge ${isPaid ? 'status-badge--paid' : 'status-badge--pending'}`}>
+        <div className={`status-pill ${isPaid ? 'status-paid' : ''}`}>
           {isPaid ? 'Оплачен' : 'Ожидает оплаты'}
         </div>
       </div>
