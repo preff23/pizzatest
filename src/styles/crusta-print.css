@@ -20,8 +20,8 @@
 html,body,#root{height:100%}
 body{
   margin:0; 
-  background: var(--bg) url('/liquidchrome.png') no-repeat right center;
-  background-size: 50% auto;
+  background: var(--bg) url('/liquidchrome.png') no-repeat right top;
+  background-size: 25% auto;
   background-attachment: fixed;
   color:var(--ink);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
