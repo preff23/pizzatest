@@ -13,38 +13,33 @@ export const MenuPage: React.FC = () => {
   }, [selectedCategory]);
 
   return (
-    <div className="menu-page">
-      <div className="menu-page__controls">
-        <div className="category-tabs">
-          <button
-            className={`category-tabs__item ${selectedCategory === 'Pizza' ? 'active' : ''}`}
-            onClick={() => setSelectedCategory('Pizza')}
-          >
-            Pizza
-          </button>
-          <button
-            className={`category-tabs__item ${selectedCategory === 'Vegan' ? 'active' : ''}`}
-            onClick={() => setSelectedCategory('Vegan')}
-          >
-            Vegan
-          </button>
-        </div>
-        
+    <div>
+      <div className="segments">
+        <button
+          className={`segment ${selectedCategory === 'Pizza' ? 'active' : ''}`}
+          onClick={() => setSelectedCategory('Pizza')}
+        >
+          Pizza
+        </button>
+        <button
+          className={`segment ${selectedCategory === 'Vegan' ? 'active' : ''}`}
+          onClick={() => setSelectedCategory('Vegan')}
+        >
+          Vegan
+        </button>
       </div>
 
-      <div className="menu-page__content">
-        {filteredMenu.length > 0 ? (
-          <div className="pizza-grid">
-            {filteredMenu.map(item => (
-              <PizzaCard key={item.id} item={item} />
-            ))}
-          </div>
-        ) : (
-          <div className="empty-state">
-            <p>Ничего не найдено</p>
-          </div>
-        )}
-      </div>
+      {filteredMenu.length > 0 ? (
+        <div>
+          {filteredMenu.map(item => (
+            <PizzaCard key={item.id} item={item} />
+          ))}
+        </div>
+      ) : (
+        <div className="empty-state">
+          <p>Ничего не найдено</p>
+        </div>
+      )}
     </div>
   );
 };

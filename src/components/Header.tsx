@@ -7,11 +7,13 @@ export const Header: React.FC = () => {
 
   return (
     <header className="header">
-      <h1 className="header__title">CRUSTA MIA</h1>
-      <p className="header__subtitle">Neopolitan Pizza • Espresso Bar</p>
-      {userName && (
-        <p className="header__welcome">Добро пожаловать, {userName}!</p>
-      )}
+      <div className="header-inner">
+        <h1 className="brand">CRUSTA MIA</h1>
+        <p className="subtitle">Neopolitan Pizza • Espresso Bar</p>
+        {userName && (
+          <p className="welcome">Добро пожаловать, {userName}!</p>
+        )}
+      </div>
     </header>
   );
 };

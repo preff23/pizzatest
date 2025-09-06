@@ -25,13 +25,13 @@ export const PizzaCard: React.FC<PizzaCardProps> = ({ item }) => {
   };
 
   return (
-    <div className="pizza-card">
-      <h3 className="pizza-card__name">{item.name}</h3>
-      <p className="pizza-card__desc">{item.desc}</p>
-      <div className="pizza-card__footer">
-        <span className="pizza-card__price">{item.price} ₽</span>
+    <div className="card">
+      <h3>{item.name}</h3>
+      <p className="desc">{item.desc}</p>
+      <div className="card-footer">
+        <span className="price">{item.price} ₽</span>
         <button 
-          className="pizza-card__button"
+          className="btn-cta"
           onClick={handleAddToCart}
         >
           Добавить в корзину
