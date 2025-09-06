@@ -70,14 +70,50 @@ export async function sendInvoiceToUser(userId: number, cart: any, bot: Telegraf
 
 // pre_checkout → разрешаем платёж (при желании сверяем сумму)
 export async function onPreCheckout(ctx: any) {
-  console.log('Pre-checkout query received:', ctx.update.pre_checkout_query);
+  const query = ctx.update.pre_checkout_query;
+  const receivedAt = new Date().toISOString();
   
-  // Тут можно проверить сумму/позиции по ctx.update.pre_checkout_query
-  // const query = ctx.update.pre_checkout_query;
-  // const totalAmount = query.total_amount;
-  // const currency = query.currency;
+  console.log('Pre-checkout query received:', {
+    timestamp: receivedAt,
+    queryId: query.id,
+    totalAmount: query.total_amount,
+    currency: query.currency,
+    payload: query.invoice_payload
+  });
   
+  // Проверяем сумму (опционально)
+  const payload = query.invoice_payload || '';
+  const orderIdMatch = payload.match(/order:(\d+)/);
+  const userIdMatch = payload.match(/user:(\d+)/);
+  
+  if (orderIdMatch && userIdMatch) {
+    const orderId = Number(orderIdMatch[1]);
+    const userId = Number(userIdMatch[1]);
+    const savedCart = getUserCart(userId);
+    
+    // Проверяем, что сумма совпадает с сохраненной корзиной
+    if (savedCart && savedCart.total !== query.total_amount / 100) {
+      console.log('Amount mismatch detected:', {
+        savedTotal: savedCart.total,
+        queryTotal: query.total_amount / 100
+      });
+      
+      const answeredAt = new Date().toISOString();
+      await ctx.answerPreCheckoutQuery(false, 'Сумма изменилась. Обновите заказ.');
+      console.log('Pre-checkout query answered (false):', {
+        timestamp: answeredAt,
+        responseTime: new Date().getTime() - new Date(receivedAt).getTime() + 'ms'
+      });
+      return;
+    }
+  }
+  
+  const answeredAt = new Date().toISOString();
   await ctx.answerPreCheckoutQuery(true);
+  console.log('Pre-checkout query answered (true):', {
+    timestamp: answeredAt,
+    responseTime: new Date().getTime() - new Date(receivedAt).getTime() + 'ms'
+  });
 }
 
 // Успешный платёж → помечаем заказ оплаченным
@@ -86,6 +122,7 @@ export async function onSuccessfulPayment(ctx: any) {
   const payload = sp.invoice_payload || '';
   
   console.log('Successful payment received:', {
+    timestamp: new Date().toISOString(),
     payload,
     totalAmount: sp.total_amount,
     currency: sp.currency,
@@ -110,6 +147,14 @@ export async function onSuccessfulPayment(ctx: any) {
     return;
   }
   
+  // Проверяем, не был ли заказ уже оплачен
+  const existingOrder = orders.get(orderId);
+  if (existingOrder && existingOrder.status === 'paid') {
+    console.log('Duplicate payment attempt detected for order:', orderId);
+    await ctx.reply('Этот заказ уже был оплачен ранее. Спасибо! 🍕');
+    return;
+  }
+  
   await markOrderPaid({
     orderId,
     userId: ctx.from.id,
@@ -122,5 +167,24 @@ export async function onSuccessfulPayment(ctx: any) {
   // Очищаем корзину пользователя
   carts.delete(userId);
   
-  await ctx.reply('Оплата прошла успешно. Спасибо! 🍕');
+  // Отправляем чек-сообщение
+  const receiptMessage = `✅ Оплата прошла успешно!
+
+📋 Детали заказа:
+💰 Сумма: ${(sp.total_amount / 100).toLocaleString('ru-RU')} ${sp.currency}
+🆔 ID платежа: ${sp.telegram_payment_charge_id}
+📅 Дата: ${new Date().toLocaleString('ru-RU')}
+
+Спасибо за заказ! Ваша пицца будет готова в течение 30-40 минут. 🍕
+
+Приятного аппетита! 😊`;
+  
+  await ctx.reply(receiptMessage);
+  
+  console.log('Order marked as paid and receipt sent:', {
+    orderId,
+    userId,
+    total: sp.total_amount / 100,
+    currency: sp.currency
+  });
 }
