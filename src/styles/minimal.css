@@ -1,12 +1,11 @@
 :root{
-  --bg:#F7F8FA;
+  --bg:#F4F4F4;
   --surface:#FFFFFF;
-  --elev:#F1F3F6;
-  --ink:#111318;
-  --muted:#656C78;
-  --line:#E1E4EA;
-  --accent:#2F67F6;
-  --accent-pressed:#244FCC;
+  --ink:#111;
+  --muted:#5C5C5C;
+  --line:#E1E1E1;
+  --accent:#111;
+  --accent-pressed:#333;
   --success:#12B76A;
   --danger:#D92D20;
 
@@ -20,7 +19,15 @@ body{
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
 
-.container{max-width:560px; margin:0 auto; padding:16px 16px 88px;}
+.container{ max-width:560px; margin:0 auto; padding:16px 16px 88px; }
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#141414; --surface:#1B1B1B;
+    --ink:#F8F8F8; --muted:#9A9A9A; --line:#2A2A2A;
+    --accent:#F8F8F8; --accent-pressed:#CCC;
+  }
+}
 
 .header{
   position:sticky; top:0; z-index:10;

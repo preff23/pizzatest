@@ -19,16 +19,8 @@ export const MenuPage: React.FC = () => {
   }, [selectedCategory]);
 
   const tabs = [
-    { 
-      key: 'Pizza', 
-      label: 'Pizza', 
-      count: MENU.filter(item => item.category === 'Pizza').length 
-    },
-    { 
-      key: 'Vegan', 
-      label: 'Vegan', 
-      count: MENU.filter(item => item.category === 'Vegan').length 
-    },
+    { key: 'Pizza', label: 'Pizza' },
+    { key: 'Vegan', label: 'Vegan' },
   ];
 
   const handleAddToCart = (item: typeof MENU[0]) => {
@@ -49,21 +41,19 @@ export const MenuPage: React.FC = () => {
         active={selectedCategory} 
         onChange={(key) => setSelectedCategory(key as 'Pizza' | 'Vegan')} 
       />
-      <div className="section-sep" />
+      <div className="section-title">{selectedCategory.toUpperCase()}</div>
       <CurvedSection>
         {filteredMenu.map(item => (
-          <div key={item.id}>
-            <DishCard 
-              dish={{
-                id: item.id,
-                name: item.name,
-                desc: item.desc,
-                price: item.price
-              }} 
-              onAdd={() => handleAddToCart(item)}
-            />
-            <div className="sep" />
-          </div>
+          <DishCard 
+            key={item.id}
+            dish={{
+              id: item.id,
+              name: item.name,
+              desc: item.desc,
+              price: item.price
+            }} 
+            onAdd={() => handleAddToCart(item)}
+          />
         ))}
       </CurvedSection>
       

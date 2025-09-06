@@ -22,21 +22,19 @@ export default function DishCard({ dish, onAdd }: Props) {
 
   return (
     <article className="card">
-      <div className="card-grid">
-        <div>
-          <h3>{dish.name}</h3>
-          <p className="desc">{dish.desc}</p>
-        </div>
-        <div className="aside">
-          <div className="price">{dish.price.toLocaleString('ru-RU')} ₽</div>
-          <button 
-            className="add-btn" 
-            aria-label="Добавить в корзину" 
-            onClick={handleAdd}
-          >
-            +
-          </button>
-        </div>
+      <div>
+        <h3>{dish.name}</h3>
+        <p className="desc">{dish.desc}</p>
+      </div>
+      <div className="aside">
+        <div className="price">{dish.price.toLocaleString('ru-RU')} ₽</div>
+        <button 
+          className="add-btn" 
+          aria-label="Добавить в корзину" 
+          onClick={handleAdd}
+        >
+          +
+        </button>
       </div>
     </article>
   );
