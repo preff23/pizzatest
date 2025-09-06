@@ -17,15 +17,15 @@
 }
 
 /* ---- Капсульные чипы (табы) ---- */
-.chips { display:flex; gap:8px; margin:12px 0 6px; }
+.chips { display:flex; gap:8px; margin:8px 0 6px; }
 .chip {
   flex:1; display:flex; align-items:center; justify-content:center; gap:8px;
-  height:40px; min-height:40px; border-radius:999px; border:1px solid var(--line);
-  background:var(--elev); color:var(--muted); font-weight:700;
-  cursor: pointer; transition: all 0.2s ease;
+  height:40px; border-radius:999px; background:var(--elev);
+  border:1px solid var(--line); color:var(--muted); font-weight:700;
+  cursor: pointer; transition: background 120ms ease, color 120ms ease, transform 120ms ease;
 }
 .chip.active { background:var(--surface); color:var(--ink); }
-.chip:focus-visible { outline:2px solid rgba(77,121,255,.6); outline-offset:2px; }
+.chip:focus-visible { outline:2px solid rgba(47,103,246,.45); outline-offset:2px; }
 .chip .count{
   min-width:22px; height:22px; padding:0 6px; border-radius:999px;
   border:1px solid var(--line); background:transparent; color:var(--muted);
@@ -45,26 +45,23 @@
 }
 
 /* ---- Карточка блюда ---- */
-.card{ margin:16px 0; border-radius:14px; border:1px solid var(--line); }
-.card-grid{
-  display:grid; grid-template-columns: 32px 1fr auto; gap:12px; align-items:flex-start;
+.card{
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:14px; padding:14px 16px; margin:12px 0;
 }
-.card .emoji{
-  width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center;
-  border:1px solid var(--line); color:var(--muted);
-}
+.card-grid{ display:grid; grid-template-columns: 1fr auto; gap:12px; align-items:start; }
 .card h3{ margin:0 0 6px; font-size:17px; font-weight:800; letter-spacing:.1px; }
-.card .desc{ margin:0; font-size:13.5px; line-height:1.45; color:var(--muted); }
-.card .aside{ display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
-.price{ font-weight:800; font-size:16px; white-space:nowrap; }
+.card .desc{ margin:0; font-size:13.5px; line-height:1.45; color:var(--muted); max-width:48ch; }
+.aside{ display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+.price{ font-size:16px; font-weight:800; white-space:nowrap; }
 
 .add-btn{
-  width:40px; height:40px; min-width:40px; min-height:40px; border-radius:50%;
+  width:40px; height:40px; border-radius:50%;
   background:var(--accent); color:#fff; border:1px solid rgba(255,255,255,.08);
-  cursor: pointer; transition: all 0.2s ease;
+  cursor: pointer; transition: background 120ms ease, transform 120ms ease;
 }
-.add-btn:active{ background:var(--accent-pressed); transform: translateY(1px); }
-.add-btn:focus-visible{ outline:2px solid rgba(77,121,255,.6); outline-offset:2px; }
+.add-btn:active{ background:var(--accent-pressed); transform:translateY(1px); }
+.add-btn:focus-visible{ outline:2px solid rgba(47,103,246,.45); outline-offset:2px; }
 
 /* ---- Разделитель внутри секции ---- */
 .sep{ height:10px; }
@@ -75,7 +72,10 @@
 .tab.active{ color:var(--ink); }
 
 /* ---- Разделители ---- */
-.section-sep, .before-tabs{ height:1px; background:var(--line); opacity:.9; margin:12px 0; }
+.section-sep{ height:1px; background:var(--line); margin:12px 0; }
+
+/* ---- Минимальные размеры тач-таргетов ---- */
+button, .chip, .tab{ min-height:40px; }
 
 /* ---- Toast уведомления ---- */
 .toast {

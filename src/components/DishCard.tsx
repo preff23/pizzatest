@@ -4,7 +4,6 @@ type Dish = {
   name: string;
   desc: string;
   price: number;
-  badges?: string[];
 };
 
 type Props = {
@@ -24,9 +23,6 @@ export default function DishCard({ dish, onAdd }: Props) {
   return (
     <article className="card">
       <div className="card-grid">
-        <div className="emoji" aria-hidden="true">
-          {(dish.badges ?? ['🍕'])[0]}
-        </div>
         <div>
           <h3>{dish.name}</h3>
           <p className="desc">{dish.desc}</p>

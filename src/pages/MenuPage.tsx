@@ -49,6 +49,7 @@ export const MenuPage: React.FC = () => {
         active={selectedCategory} 
         onChange={(key) => setSelectedCategory(key as 'Pizza' | 'Vegan')} 
       />
+      <div className="section-sep" />
       <CurvedSection>
         {filteredMenu.map(item => (
           <div key={item.id}>
@@ -57,8 +58,7 @@ export const MenuPage: React.FC = () => {
                 id: item.id,
                 name: item.name,
                 desc: item.desc,
-                price: item.price,
-                badges: item.category === 'Vegan' ? ['🌿', '🥦'] : ['🍕']
+                price: item.price
               }} 
               onAdd={() => handleAddToCart(item)}
             />
