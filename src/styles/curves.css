@@ -1,0 +1,300 @@
+/* ---- Глобальные контейнеры ---- */
+.container { max-width:560px; margin:0 auto; padding:12px 16px 96px; }
+
+/* ---- Hero ---- */
+.hero {
+  position: relative; padding: 22px 16px 16px; border-radius: 20px;
+  background: var(--surface, #1e222a); border:1px solid var(--line, #2b313a);
+}
+.hero h1 { margin:0 0 6px; font-size:20px; font-weight:800; letter-spacing:.2px; }
+.hero p  { margin:0; color:var(--muted, #9aa3b2); font-size:13px; }
+
+/* декоративная «волна» */
+.hero::after{
+  content:''; position:absolute; inset:auto 0 -1px 0; height:22px;
+  background: radial-gradient(120% 100% at 50% 0%, transparent 50%, rgba(255,255,255,.06) 51%);
+  opacity:.35;
+}
+
+/* ---- Капсульные чипы (табы) ---- */
+.chips { display:flex; gap:8px; margin:12px 0 6px; }
+.chip {
+  flex:1; display:flex; align-items:center; justify-content:center; gap:8px;
+  height:36px; border-radius:999px; background:var(--elev, #14181f);
+  border:1px solid var(--line, #2b313a); color:var(--muted, #9aa3b2);
+  font-weight:700; font-size:13px; cursor: pointer; transition: all 0.2s ease;
+}
+.chip.active { background: var(--surface, #1e222a); color:var(--ink, #e7ebf0); }
+.chip:focus-visible { outline:2px solid rgba(77,121,255,.6); outline-offset:2px; }
+.chip .count{
+  min-width:22px; height:22px; padding:0 8px; border-radius:999px;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,.08); color:inherit; font-size:12px; font-weight:700;
+}
+
+/* ---- Волнистые секции ---- */
+.section { margin:14px 0; position:relative; }
+.curve {
+  background: var(--surface, #1e222a); border:1px solid var(--line, #2b313a);
+  border-radius:20px; padding:12px;
+  clip-path: path("M10,0 Hcalc(100% - 10) Q100,0 100,10 Vcalc(100% - 10) Q100,100  calc(100% - 10),100 H10 Q0,100 0,calc(100% - 10) V10 Q0,0 10,0 Z");
+}
+/* Фолбек без path: просто border-radius */
+@supports not (clip-path: path("M0,0")) {
+  .curve { clip-path:none; }
+}
+
+/* ---- Карточка блюда ---- */
+.dish {
+  display:grid; grid-template-columns: 64px 1fr auto; align-items:center;
+  gap:12px; padding:14px; border-radius:16px;
+  background:var(--surface, #1e222a); border:1px solid var(--line, #2b313a);
+}
+.dish .left {
+  display:flex; flex-direction:column; gap:8px; align-items:center; justify-content:center;
+}
+.icon-badge{
+  width:28px; height:28px; border-radius:8px; border:1px solid var(--line, #2b313a);
+  display:flex; align-items:center; justify-content:center; color:var(--muted, #9aa3b2);
+  font-size:14px;
+}
+.dish h3{ margin:0 0 6px; font-size:17px; font-weight:800; }
+.dish .desc{ margin:0; color:var(--muted, #9aa3b2); font-size:13px; line-height:1.35; }
+.dish .price{ font-weight:800; font-size:16px; align-self:flex-start; }
+
+.add-btn{
+  position:relative; display:inline-flex; align-items:center; justify-content:center;
+  width:42px; height:42px; border-radius:12px; background:var(--accent, #4d79ff);
+  color:#fff; font-size:22px; border:1px solid rgba(255,255,255,.08);
+  cursor: pointer; transition: all 0.2s ease;
+}
+.add-btn:active{ background: var(--accent-pressed, #3b61cc); }
+.add-btn:focus-visible{ outline:2px solid rgba(77,121,255,.6); outline-offset:2px; }
+
+/* ---- Разделитель внутри секции ---- */
+.sep{ height:10px; }
+
+/* ---- Обновленные стили для корзины и статуса ---- */
+.cart-curved, .status-curved {
+  background: var(--surface, #1e222a); border:1px solid var(--line, #2b313a);
+  border-radius:20px; padding:16px; margin:14px 0;
+}
+
+.cart-item-curved {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line, #2b313a);
+}
+
+.cart-item-curved:last-child {
+  border-bottom: none;
+}
+
+.cart-item-curved .info {
+  flex: 1;
+  margin-right: 12px;
+}
+
+.cart-item-curved .name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink, #e7ebf0);
+  margin-bottom: 4px;
+}
+
+.cart-item-curved .price {
+  font-size: 14px;
+  color: var(--muted, #9aa3b2);
+}
+
+.cart-item-curved .controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 12px;
+}
+
+.cart-item-curved .qty {
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+  color: var(--ink, #e7ebf0);
+}
+
+.cart-item-curved .total {
+  font-weight: 600;
+  color: var(--ink, #e7ebf0);
+}
+
+.cart-summary-curved {
+  background: var(--surface, #1e222a);
+  border-radius: 20px;
+  padding: 20px;
+  margin: 14px 0;
+  border: 1px solid var(--line, #2b313a);
+}
+
+.cart-summary-curved .total {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink, #e7ebf0);
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line, #2b313a);
+}
+
+.cart-summary-curved .actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cart-summary-curved .button {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cart-summary-curved .button:focus-visible {
+  outline: 2px solid rgba(77,121,255,.6);
+  outline-offset: 2px;
+}
+
+.cart-summary-curved .button--clear {
+  background: transparent;
+  color: var(--muted, #9aa3b2);
+  border-color: var(--line, #2b313a);
+}
+
+.cart-summary-curved .button--checkout {
+  background: var(--success, #12B76A);
+  color: #fff;
+}
+
+.cart-summary-curved .button--checkout:active {
+  background: #0E8F5C;
+}
+
+/* Статус */
+.status-curved .order-status {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.status-curved .order-status h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: var(--ink, #e7ebf0);
+}
+
+.status-curved .order-items {
+  margin-bottom: 24px;
+}
+
+.status-curved .order-items h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: var(--ink, #e7ebf0);
+}
+
+.status-curved .order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line, #2b313a);
+}
+
+.status-curved .order-item:last-child {
+  border-bottom: none;
+}
+
+.status-curved .order-item .name {
+  flex: 1;
+  font-weight: 500;
+  color: var(--ink, #e7ebf0);
+}
+
+.status-curved .order-item .qty {
+  color: var(--muted, #9aa3b2);
+  margin: 0 12px;
+}
+
+.status-curved .order-item .price {
+  font-weight: 600;
+  color: var(--ink, #e7ebf0);
+}
+
+.status-curved .status-actions {
+  text-align: center;
+}
+
+.status-curved .status-actions .button {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: var(--accent, #4d79ff);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.status-curved .status-actions .button:active {
+  background: var(--accent-pressed, #3b61cc);
+}
+
+.status-curved .status-actions .button:focus-visible {
+  outline: 2px solid rgba(77,121,255,.6);
+  outline-offset: 2px;
+}
+
+/* Empty states */
+.empty-cart-curved, .empty-status-curved {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted, #9aa3b2);
+}
+
+.empty-cart-curved h2, .empty-status-curved h2 {
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: var(--ink, #e7ebf0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .container {
+    padding: 8px 12px 96px;
+  }
+  
+  .hero {
+    padding: 18px 12px 14px;
+  }
+  
+  .hero h1 {
+    font-size: 18px;
+  }
+  
+  .dish {
+    padding: 12px;
+    gap: 10px;
+  }
+  
+  .dish h3 {
+    font-size: 16px;
+  }
+  
+  .add-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+}
