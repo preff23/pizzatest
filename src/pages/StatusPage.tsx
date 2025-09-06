@@ -37,7 +37,7 @@ export const StatusPage: React.FC = () => {
             <div key={item.id} className="order-item">
               <span className="name">{item.name}</span>
               <span className="qty">×{item.qty}</span>
-              <span className="price">{item.price * item.qty} ₽</span>
+              <span className="price">{(item.price * item.qty).toLocaleString('ru-RU')} ₽</span>
             </div>
           ))}
         </div>

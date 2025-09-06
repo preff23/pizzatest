@@ -57,7 +57,7 @@ export const CartPage: React.FC = () => {
           <div key={item.id} className="cart-item-curved">
             <div className="info">
               <h3 className="name">{item.name}</h3>
-              <p className="price">{item.price} ₽</p>
+              <p className="price">{item.price.toLocaleString('ru-RU')} ₽</p>
             </div>
             
             <div className="controls">
@@ -84,7 +84,7 @@ export const CartPage: React.FC = () => {
             </div>
             
             <div className="total">
-              {item.price * item.qty} ₽
+              {(item.price * item.qty).toLocaleString('ru-RU')} ₽
             </div>
           </div>
         ))}
@@ -92,7 +92,7 @@ export const CartPage: React.FC = () => {
 
       <div className="cart-summary-curved">
         <div className="total">
-          <span>Итого: {totalPrice} ₽</span>
+          <span>Итого: {totalPrice.toLocaleString('ru-RU')} ₽</span>
         </div>
         
         <div className="actions">

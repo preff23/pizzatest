@@ -1,14 +1,15 @@
 import React, { useState, useMemo } from 'react';
-import Hero from '../components/Hero';
 import SegmentedChips from '../components/SegmentedChips';
 import CurvedSection from '../components/CurvedSection';
 import DishCard from '../components/DishCard';
+import Toast from '../components/Toast';
 import { MENU } from '../data/menu';
 import { useCart } from '../store/cartContext';
 
 export const MenuPage: React.FC = () => {
   const { add } = useCart();
   const [selectedCategory, setSelectedCategory] = useState<'Pizza' | 'Vegan'>('Pizza');
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const filteredMenu = useMemo(() => {
     return MENU.filter(item => {
@@ -37,17 +38,12 @@ export const MenuPage: React.FC = () => {
       price: item.price,
     });
     
-    // Показываем мини-тост
-    if (window.Telegram?.WebApp?.showAlert) {
-      window.Telegram.WebApp.showAlert('Добавлено в корзину!');
-    } else {
-      alert('Добавлено в корзину!');
-    }
+    // Показываем Toast
+    setToastMessage('Добавлено');
   };
 
   return (
     <div className="container">
-      <Hero />
       <SegmentedChips 
         tabs={tabs} 
         active={selectedCategory} 
@@ -70,6 +66,13 @@ export const MenuPage: React.FC = () => {
           </div>
         ))}
       </CurvedSection>
+      
+      {toastMessage && (
+        <Toast 
+          message={toastMessage} 
+          onClose={() => setToastMessage(null)} 
+        />
+      )}
     </div>
   );
 };

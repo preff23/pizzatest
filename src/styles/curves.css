@@ -20,16 +20,16 @@
 .chips { display:flex; gap:8px; margin:12px 0 6px; }
 .chip {
   flex:1; display:flex; align-items:center; justify-content:center; gap:8px;
-  height:36px; border-radius:999px; background:var(--elev, #14181f);
-  border:1px solid var(--line, #2b313a); color:var(--muted, #9aa3b2);
-  font-weight:700; font-size:13px; cursor: pointer; transition: all 0.2s ease;
+  height:40px; min-height:40px; border-radius:999px; border:1px solid var(--line);
+  background:var(--elev); color:var(--muted); font-weight:700;
+  cursor: pointer; transition: all 0.2s ease;
 }
-.chip.active { background: var(--surface, #1e222a); color:var(--ink, #e7ebf0); }
+.chip.active { background:var(--surface); color:var(--ink); }
 .chip:focus-visible { outline:2px solid rgba(77,121,255,.6); outline-offset:2px; }
 .chip .count{
-  min-width:22px; height:22px; padding:0 8px; border-radius:999px;
-  display:inline-flex; align-items:center; justify-content:center;
-  background:rgba(255,255,255,.08); color:inherit; font-size:12px; font-weight:700;
+  min-width:22px; height:22px; padding:0 6px; border-radius:999px;
+  border:1px solid var(--line); background:transparent; color:var(--muted);
+  font-size:12px; font-weight:700;
 }
 
 /* ---- Волнистые секции ---- */
@@ -45,34 +45,66 @@
 }
 
 /* ---- Карточка блюда ---- */
-.dish {
-  display:grid; grid-template-columns: 64px 1fr auto; align-items:center;
-  gap:12px; padding:14px; border-radius:16px;
-  background:var(--surface, #1e222a); border:1px solid var(--line, #2b313a);
+.card{ margin:16px 0; border-radius:14px; border:1px solid var(--line); }
+.card-grid{
+  display:grid; grid-template-columns: 32px 1fr auto; gap:12px; align-items:flex-start;
 }
-.dish .left {
-  display:flex; flex-direction:column; gap:8px; align-items:center; justify-content:center;
+.card .emoji{
+  width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--line); color:var(--muted);
 }
-.icon-badge{
-  width:28px; height:28px; border-radius:8px; border:1px solid var(--line, #2b313a);
-  display:flex; align-items:center; justify-content:center; color:var(--muted, #9aa3b2);
-  font-size:14px;
-}
-.dish h3{ margin:0 0 6px; font-size:17px; font-weight:800; }
-.dish .desc{ margin:0; color:var(--muted, #9aa3b2); font-size:13px; line-height:1.35; }
-.dish .price{ font-weight:800; font-size:16px; align-self:flex-start; }
+.card h3{ margin:0 0 6px; font-size:17px; font-weight:800; letter-spacing:.1px; }
+.card .desc{ margin:0; font-size:13.5px; line-height:1.45; color:var(--muted); }
+.card .aside{ display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+.price{ font-weight:800; font-size:16px; white-space:nowrap; }
 
 .add-btn{
-  position:relative; display:inline-flex; align-items:center; justify-content:center;
-  width:42px; height:42px; border-radius:12px; background:var(--accent, #4d79ff);
-  color:#fff; font-size:22px; border:1px solid rgba(255,255,255,.08);
+  width:40px; height:40px; min-width:40px; min-height:40px; border-radius:50%;
+  background:var(--accent); color:#fff; border:1px solid rgba(255,255,255,.08);
   cursor: pointer; transition: all 0.2s ease;
 }
-.add-btn:active{ background: var(--accent-pressed, #3b61cc); }
+.add-btn:active{ background:var(--accent-pressed); transform: translateY(1px); }
 .add-btn:focus-visible{ outline:2px solid rgba(77,121,255,.6); outline-offset:2px; }
 
 /* ---- Разделитель внутри секции ---- */
 .sep{ height:10px; }
+
+/* ---- Нижний таб-бар ---- */
+.bottom-bar{ background:var(--surface); border-top:1px solid var(--line); }
+.tab{ background:transparent; border:none; color:var(--muted); }
+.tab.active{ color:var(--ink); }
+
+/* ---- Разделители ---- */
+.section-sep, .before-tabs{ height:1px; background:var(--line); opacity:.9; margin:12px 0; }
+
+/* ---- Toast уведомления ---- */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 12px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 1000;
+  animation: toastSlideIn 0.3s ease-out;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
 
 /* ---- Обновленные стили для корзины и статуса ---- */
 .cart-curved, .status-curved {

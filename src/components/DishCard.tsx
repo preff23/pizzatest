@@ -13,28 +13,34 @@ type Props = {
 };
 
 export default function DishCard({ dish, onAdd }: Props) {
+  const handleAdd = () => {
+    // Хаптик обратная связь
+    if (window.Telegram?.WebApp?.HapticFeedback?.impactOccurred) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
+    onAdd();
+  };
+
   return (
-    <article className="dish">
-      <div className="left">
-        {(dish.badges ?? ['🍕']).slice(0, 3).map((badge, i) => (
-          <div key={i} className="icon-badge" aria-hidden="true">
-            {badge}
-          </div>
-        ))}
-      </div>
-      <div>
-        <h3>{dish.name}</h3>
-        <p className="desc">{dish.desc}</p>
-      </div>
-      <div>
-        <div className="price">{dish.price} ₽</div>
-        <button 
-          className="add-btn" 
-          aria-label="Добавить в корзину" 
-          onClick={onAdd}
-        >
-          +
-        </button>
+    <article className="card">
+      <div className="card-grid">
+        <div className="emoji" aria-hidden="true">
+          {(dish.badges ?? ['🍕'])[0]}
+        </div>
+        <div>
+          <h3>{dish.name}</h3>
+          <p className="desc">{dish.desc}</p>
+        </div>
+        <div className="aside">
+          <div className="price">{dish.price.toLocaleString('ru-RU')} ₽</div>
+          <button 
+            className="add-btn" 
+            aria-label="Добавить в корзину" 
+            onClick={handleAdd}
+          >
+            +
+          </button>
+        </div>
       </div>
     </article>
   );
