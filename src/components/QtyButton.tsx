@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 type Props = {
   itemId: string;
@@ -6,7 +6,7 @@ type Props = {
   onRemove: () => void;
 };
 
-export default function QtyButton({ itemId, onAdd, onRemove }: Props) {
+export default function QtyButton({ onAdd, onRemove }: Props) {
   const [count, setCount] = useState(0);
   const [isPulsing, setIsPulsing] = useState(false);
 

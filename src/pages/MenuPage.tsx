@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import SegmentedChips from '../components/SegmentedChips';
 import QtyButton from '../components/QtyButton';
 import Toast from '../components/Toast';
