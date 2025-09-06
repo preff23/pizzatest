@@ -4,15 +4,13 @@ import { MENU } from '../data/menu';
 
 export const MenuPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<'Pizza' | 'Vegan'>('Pizza');
-  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredMenu = useMemo(() => {
     return MENU.filter(item => {
       const matchesCategory = item.category === selectedCategory;
-      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
+      return matchesCategory;
     });
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory]);
 
   return (
     <div className="menu-page">
@@ -32,15 +30,6 @@ export const MenuPage: React.FC = () => {
           </button>
         </div>
         
-        <div className="search-field">
-          <input
-            type="text"
-            placeholder="Поиск..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-field__input"
-          />
-        </div>
       </div>
 
       <div className="menu-page__content">
