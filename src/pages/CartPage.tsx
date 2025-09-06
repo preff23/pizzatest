@@ -69,6 +69,44 @@ export const CartPage: React.FC = () => {
     }
   };
 
+  const checkOrderStatus = async () => {
+    try {
+      const tg = (window as any).Telegram?.WebApp;
+      const userId = tg?.initDataUnsafe?.user?.id;
+
+      if (!userId) {
+        alert('Не удалось получить данные пользователя');
+        return;
+      }
+
+      const serverUrl = import.meta.env.VITE_SERVER_URL || 
+        (import.meta.env.DEV 
+          ? 'http://localhost:3001'
+          : 'https://pizzaback-one.vercel.app');
+
+      const response = await fetch(`${serverUrl}/api/order-status?userId=${userId}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.orders && data.orders.length > 0) {
+          const lastOrder = data.orders[data.orders.length - 1];
+          if (lastOrder.status === 'paid') {
+            alert(`✅ Заказ #${lastOrder.orderId} оплачен!\n💰 Сумма: ${lastOrder.total} ${lastOrder.currency}\n📅 Дата: ${new Date(lastOrder.paidAt).toLocaleString('ru-RU')}`);
+          } else {
+            alert(`⏳ Заказ #${lastOrder.orderId} ожидает оплаты`);
+          }
+        } else {
+          alert('📋 У вас нет заказов');
+        }
+      } else {
+        alert('❌ Ошибка при проверке статуса заказа');
+      }
+    } catch (error) {
+      console.error('Error checking order status:', error);
+      alert('❌ Ошибка при проверке статуса заказа');
+    }
+  };
+
   if (items.length === 0) {
     return (
       <div className="container">
@@ -131,6 +169,12 @@ export const CartPage: React.FC = () => {
             onClick={clear}
           >
             Очистить корзину
+          </button>
+          <button
+            className="button button--secondary"
+            onClick={checkOrderStatus}
+          >
+            Проверить статус заказа
           </button>
           <button
             className="button button--checkout"
