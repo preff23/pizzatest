@@ -59,8 +59,7 @@ export function buildInvoice(userId: number, cart: any) {
 }
 
 // Отправка инвойса пользователю
-export async function sendInvoiceToUser(userId: number, bot: Telegraf) {
-  const cart = getUserCart(userId);
+export async function sendInvoiceToUser(userId: number, cart: any, bot: Telegraf) {
   if (!cart || !cart.items?.length) {
     throw new Error('EMPTY_CART');
   }

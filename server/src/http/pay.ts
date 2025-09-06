@@ -10,16 +10,20 @@ export async function payHandler(req: Request, res: Response) {
     // userId достанем из initData мини-аппа (передаём с фронта)
     const { userId, cart } = req.body;
     
+    console.log('Pay request received:', { userId, cartItems: cart?.items?.length, cartTotal: cart?.total });
+    
     if (!userId) {
       return res.status(400).json({ ok: false, error: 'NO_USER' });
     }
     
-    // Сохраняем корзину пользователя
-    if (cart) {
-      setUserCart(Number(userId), cart);
+    if (!cart || !cart.items || !cart.items.length) {
+      return res.status(400).json({ ok: false, error: 'EMPTY_CART' });
     }
     
-    await sendInvoiceToUser(Number(userId), bot);
+    // Сохраняем корзину пользователя
+    setUserCart(Number(userId), cart);
+    
+    await sendInvoiceToUser(Number(userId), cart, bot);
     res.json({ ok: true });
   } catch (e: any) {
     console.error('Error in payHandler:', e);
