@@ -2,8 +2,8 @@ import { MenuItem } from '../types';
 
 export const MENU: MenuItem[] = [
   // ТЕСТОВАЯ ПОЗИЦИЯ
-  { id:'test-item', name:'ТЕСТОВАЯ ПОЗИЦИЯ', price:1, category:'Test',
-    desc:'Тестовая позиция для проверки платежей за 1 рубль' },
+  { id:'test-item', name:'ТЕСТОВАЯ ПОЗИЦИЯ', price:50, category:'Test',
+    desc:'Тестовая позиция для проверки платежей за 50 рублей' },
   
   // PIZZA
   { id:'pepperoni', name:'ПЕППЕРОНИ', price:830, category:'Pizza',
