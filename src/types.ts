@@ -3,7 +3,7 @@ export type MenuItem = {
   name: string;
   price: number;
   desc: string;
-  category: 'Pizza' | 'Vegan';
+  category: 'Pizza' | 'Vegan' | 'Test';
   tags?: string[];
 };
 
