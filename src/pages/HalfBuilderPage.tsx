@@ -67,41 +67,44 @@ export const HalfBuilderPage: React.FC = () => {
 
   return (
     <div className="container">
-      <div className="hb">
+      <h2 className="section-title">СОБРАТЬ ½ + ½</h2>
+      <div className="section-rule"></div>
+      
+      <div className="half-builder">
         {/* Left Panel - Pizza Selection */}
-        <div className="hb-left">
-          <div className="hb-filters">
-            <div className="hb-chips">
+        <div className="half-builder-left">
+          <div className="half-builder-filters">
+            <div className="filter-chips">
               <button 
-                className={`hb-chip ${selectedTab === 'Pizza' ? 'active' : ''}`}
+                className={`filter-chip ${selectedTab === 'Pizza' ? 'active' : ''}`}
                 onClick={() => setSelectedTab('Pizza')}
               >
                 Pizza
               </button>
               <button 
-                className={`hb-chip ${selectedTab === 'Vegan' ? 'active' : ''}`}
+                className={`filter-chip ${selectedTab === 'Vegan' ? 'active' : ''}`}
                 onClick={() => setSelectedTab('Vegan')}
               >
                 Vegan
               </button>
             </div>
             <input 
-              className="hb-search" 
+              className="search-input" 
               placeholder="Поиск пиццы"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           
-          <div className="hb-list">
+          <div className="pizza-list">
             {availablePizzas.map(pizza => (
-              <div key={pizza.id} className="hb-item">
-                <div className="hb-item-info">
-                  <div className="hb-item-name">{pizza.name}</div>
-                  <div className="hb-item-price">{pizza.price} ₽</div>
+              <div key={pizza.id} className="pizza-item">
+                <div className="pizza-info">
+                  <div className="pizza-name">{pizza.name}</div>
+                  <div className="pizza-price">{pizza.price} ₽</div>
                 </div>
                 <button 
-                  className="hb-pick-btn"
+                  className="select-btn"
                   onClick={() => handlePick(pizza)}
                 >
                   Выбрать
@@ -112,67 +115,67 @@ export const HalfBuilderPage: React.FC = () => {
         </div>
 
         {/* Right Panel - Preview and Controls */}
-        <div className="hb-right">
-          <div className="hb-preview">
-            <div className="hb-disk">
-              <div className="hb-slice left">
+        <div className="half-builder-right">
+          <div className="pizza-preview">
+            <div className="pizza-disk">
+              <div className="pizza-slice left">
                 {left?.name || 'Левая ½'}
               </div>
-              <div className="hb-slice right">
+              <div className="pizza-slice right">
                 {right?.name || 'Правая ½'}
               </div>
             </div>
           </div>
 
-          <div className="hb-slots">
-            <div className="hb-slot">
-              <div className="hb-slot-info">
-                <div className="hb-slot-label">Левая ½</div>
-                <div className="hb-slot-name">
+          <div className="pizza-slots">
+            <div className={`pizza-slot ${left ? 'filled' : ''}`}>
+              <div className="slot-info">
+                <div className="slot-label">Левая ½</div>
+                <div className="slot-name">
                   {left?.name || 'Выберите половинку'}
                 </div>
                 {left && (
-                  <div className="hb-slot-price">{left.price} ₽</div>
+                  <div className="slot-price">{left.price} ₽</div>
                 )}
               </div>
               {left && (
                 <button 
-                  className="hb-clear-btn"
+                  className="clear-btn"
                   onClick={() => handleClearSlot('left')}
                 >
-                  Очистить
+                  ×
                 </button>
               )}
             </div>
 
-            <div className="hb-slot">
-              <div className="hb-slot-info">
-                <div className="hb-slot-label">Правая ½</div>
-                <div className="hb-slot-name">
+            <div className={`pizza-slot ${right ? 'filled' : ''}`}>
+              <div className="slot-info">
+                <div className="slot-label">Правая ½</div>
+                <div className="slot-name">
                   {right?.name || 'Выберите половинку'}
                 </div>
                 {right && (
-                  <div className="hb-slot-price">{right.price} ₽</div>
+                  <div className="slot-price">{right.price} ₽</div>
                 )}
               </div>
               {right && (
                 <button 
-                  className="hb-clear-btn"
+                  className="clear-btn"
                   onClick={() => handleClearSlot('right')}
                 >
-                  Очистить
+                  ×
                 </button>
               )}
             </div>
           </div>
 
-          <div className="hb-total">
-            <div className="hb-total-label">Итого:</div>
-            <div className="hb-total-price">{total.toLocaleString('ru-RU')} ₽</div>
+          <div className="total-section">
+            <div className="total-label">Итого:</div>
+            <div className="total-price">{total.toLocaleString('ru-RU')} ₽</div>
           </div>
 
           <button 
-            className="hb-add"
+            className={`add-to-cart-btn ${left && right ? 'active' : 'disabled'}`}
             disabled={!(left && right)}
             onClick={handleAddToCart}
           >
