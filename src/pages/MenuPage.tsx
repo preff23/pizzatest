@@ -2,17 +2,19 @@ import React, { useState, useMemo } from 'react';
 import SegmentedChips from '../components/SegmentedChips';
 import QtyButton from '../components/QtyButton';
 import Toast from '../components/Toast';
+import { HalfBuilderPage } from './HalfBuilderPage';
 import { MENU } from '../data/menu';
 import { useCart } from '../store/cartContext';
 
 export const MenuPage: React.FC = () => {
   const { add, remove } = useCart();
-  const [selectedCategory, setSelectedCategory] = useState<'Pizza' | 'Vegan'>('Pizza');
+  const [selectedCategory, setSelectedCategory] = useState<'Pizza' | 'Vegan' | 'Build'>('Pizza');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [listVisible, setListVisible] = useState(true);
 
   const filteredMenu = useMemo(() => {
+    if (selectedCategory === 'Build') return [];
     return MENU.filter(item => {
       const matchesCategory = item.category === selectedCategory;
       return matchesCategory;
@@ -30,10 +32,20 @@ export const MenuPage: React.FC = () => {
       label: 'Vegan', 
       count: MENU.filter(item => item.category === 'Vegan').length 
     },
+    { 
+      key: 'Build', 
+      label: 'Собрать', 
+      count: 0 
+    },
   ];
 
   const handleCategoryChange = (key: string) => {
-    const newCategory = key as 'Pizza' | 'Vegan';
+    const newCategory = key as 'Pizza' | 'Vegan' | 'Build';
+    
+    if (newCategory === 'Build') {
+      setSelectedCategory(newCategory);
+      return;
+    }
     
     // Hide list with animation
     setListVisible(false);
@@ -69,6 +81,10 @@ export const MenuPage: React.FC = () => {
       (window as any).Telegram.WebApp.HapticFeedback.selectionChanged();
     }
   };
+
+  if (selectedCategory === 'Build') {
+    return <HalfBuilderPage />;
+  }
 
   return (
     <div className="container">

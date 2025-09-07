@@ -127,41 +127,47 @@ export const CartPage: React.FC = () => {
   return (
     <div className="container">
       <CurvedSection>
-        {items.map(item => (
-          <div key={item.id} className="cart-item-curved">
-            <div className="info">
-              <h3 className="name">{item.name}</h3>
-              <p className="price">{item.price.toLocaleString('ru-RU')} ₽</p>
+        {items.map((item) => {
+          const itemId = item.kind === 'single' ? item.itemId : `${item.leftId}+${item.rightId}`;
+          const isHalf = item.kind === 'half';
+          
+          return (
+            <div key={itemId} className="cart-item-curved">
+              <div className="info">
+                <h3 className="name">{item.name}</h3>
+                {isHalf && <p className="half-subtitle">Собрано из половинок</p>}
+                <p className="price">{item.price.toLocaleString('ru-RU')} ₽</p>
+              </div>
+              
+              <div className="controls">
+                <button
+                  className="icon-btn"
+                  onClick={() => dec(itemId)}
+                >
+                  −
+                </button>
+                <span className="qty">{item.qty}</span>
+                <button
+                  className="icon-btn"
+                  onClick={() => inc(itemId)}
+                >
+                  +
+                </button>
+                <button
+                  className="icon-btn"
+                  onClick={() => remove(itemId)}
+                  style={{ color: 'var(--danger)' }}
+                >
+                  ×
+                </button>
+              </div>
+              
+              <div className="total">
+                {(item.price * item.qty).toLocaleString('ru-RU')} ₽
+              </div>
             </div>
-            
-            <div className="controls">
-              <button
-                className="icon-btn"
-                onClick={() => dec(item.id)}
-              >
-                −
-              </button>
-              <span className="qty">{item.qty}</span>
-              <button
-                className="icon-btn"
-                onClick={() => inc(item.id)}
-              >
-                +
-              </button>
-              <button
-                className="icon-btn"
-                onClick={() => remove(item.id)}
-                style={{ color: 'var(--danger)' }}
-              >
-                ×
-              </button>
-            </div>
-            
-            <div className="total">
-              {(item.price * item.qty).toLocaleString('ru-RU')} ₽
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </CurvedSection>
 
       <div className="cart-summary-curved">

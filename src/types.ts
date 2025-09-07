@@ -1,4 +1,12 @@
 
+export type PizzaItem = {
+  id: string
+  name: string
+  price: number  // рубли, целое
+  category: 'pizza' | 'vegan'
+  available?: boolean
+}
+
 export type MenuItem = {
   id: string;
   name: string;
@@ -15,9 +23,19 @@ export type CartItem = {
   qty: number; 
 };
 
+export type CartLine =
+  | { kind: 'single'; itemId: string; name: string; price: number; qty: number }
+  | { kind: 'half'; leftId: string; rightId: string; name: string; price: number; qty: number }
+
+export function halfPrice(a: number, b: number) {
+  // половины суммируются; округляем вверх до рубля
+  return Math.ceil(a/2 + b/2)
+}
+
 export type CartContextType = {
-  items: CartItem[];
+  items: CartLine[];
   add: (item: Omit<CartItem, 'qty'>) => void;
+  addHalf: (leftId: string, rightId: string, leftName: string, rightName: string, leftPrice: number, rightPrice: number) => void;
   remove: (id: string) => void;
   inc: (id: string) => void;
   dec: (id: string) => void;
