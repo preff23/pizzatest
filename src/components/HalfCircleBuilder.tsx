@@ -1,38 +1,52 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { MENU } from '../data/menu';
 import { useCart } from '../store/cartContext';
 import { halfPrice, MenuItem } from '../types';
 import Toast from './Toast';
 import '../styles/half-circle.css';
 
+type Side = 'left'|'right'
+
 export const HalfCircleBuilder: React.FC = () => {
   const { addHalf } = useCart();
-  const [activeSide, setActiveSide] = useState<'left'|'right'>('left');
+  const [activeSide, setActiveSide] = useState<Side>('left');
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [left, setLeft] = useState<MenuItem|null>(null);
   const [right, setRight] = useState<MenuItem|null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [priceUpdate, setPriceUpdate] = useState(false);
+  const prevTotalRef = useRef(0);
 
-  const pizzaItems = useMemo(() => {
+  const menuItems = useMemo(() => {
     return MENU;
   }, []);
 
   const total = left && right ? halfPrice(left.price, right.price) : 0;
 
-  function setById(side: 'left'|'right', id: string) {
-    const item = pizzaItems.find(p => p.id === id) || null;
-    side === 'left' ? setLeft(item) : setRight(item);
-    if (side === 'left') setActiveSide('right');
+  // Анимация обновления цены
+  useEffect(() => {
+    if (total !== prevTotalRef.current && total > 0) {
+      setPriceUpdate(true);
+      const timer = setTimeout(() => setPriceUpdate(false), 160);
+      prevTotalRef.current = total;
+      return () => clearTimeout(timer);
+    }
+  }, [total]);
+
+  function openSheet(side: Side) { 
+    setActiveSide(side); 
+    setSheetOpen(true); 
   }
 
-  function openSelect(side: 'left'|'right') {
-    setActiveSide(side);
-    // Фокусируем соответствующий select
-    setTimeout(() => {
-      const selectElement = document.querySelector(`[data-side="${side}"]`) as HTMLSelectElement;
-      if (selectElement) {
-        selectElement.focus();
-      }
-    }, 100);
+  function closeSheet() { 
+    setSheetOpen(false); 
+  }
+
+  function choose(item: MenuItem) {
+    if (activeSide === 'left') setLeft(item); 
+    else setRight(item);
+    setSheetOpen(false);
+    if (activeSide === 'left') setActiveSide('right'); // плавный сценарий 1/2 → 2/2
   }
 
   function addHalfToCart() {
@@ -63,11 +77,11 @@ export const HalfCircleBuilder: React.FC = () => {
           <div className={`hc-disk ${activeSide === 'left' ? 'is-left' : 'is-right'}`}>
             <button 
               className="slice left"  
-              aria-label="Выбрать левую половинку"  
-              onClick={() => openSelect('left')}
+              aria-label="Левая половинка"  
+              onClick={() => openSheet('left')}
             >
               <span className="slice-label">{left?.name || 'Левая ½'}</span>
-              {left && (
+              {!!left && (
                 <span 
                   className="slice-clear" 
                   onClick={(e) => { e.stopPropagation(); setLeft(null); }}
@@ -79,11 +93,11 @@ export const HalfCircleBuilder: React.FC = () => {
             <div className="divider" />
             <button 
               className="slice right" 
-              aria-label="Выбрать правую половинку" 
-              onClick={() => openSelect('right')}
+              aria-label="Правая половинка" 
+              onClick={() => openSheet('right')}
             >
               <span className="slice-label">{right?.name || 'Правая ½'}</span>
-              {right && (
+              {!!right && (
                 <span 
                   className="slice-clear" 
                   onClick={(e) => { e.stopPropagation(); setRight(null); }}
@@ -95,42 +109,8 @@ export const HalfCircleBuilder: React.FC = () => {
           </div>
         </section>
 
-        <section className="hc-selects">
-          <div className="hc-select">
-            <label>Левая половинка</label>
-            <select 
-              value={left?.id || ''} 
-              onChange={(e) => setById('left', e.target.value)}
-              data-side="left"
-            >
-              <option value="">Выберите половинку</option>
-              {pizzaItems.map(p => (
-                <option key={p.id} value={p.id}>
-                  {p.name} — {p.price} ₽
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="hc-select">
-            <label>Правая половинка</label>
-            <select 
-              value={right?.id || ''} 
-              onChange={(e) => setById('right', e.target.value)}
-              data-side="right"
-            >
-              <option value="">Выберите половинку</option>
-              {pizzaItems.map(p => (
-                <option key={p.id} value={p.id}>
-                  {p.name} — {p.price} ₽
-                </option>
-              ))}
-            </select>
-          </div>
-        </section>
-
         <section className="hc-cta">
-          <div className="hc-price">
+          <div className={`hc-price ${priceUpdate ? 'upd' : ''}`}>
             {total > 0 ? `${total.toLocaleString('ru-RU')} ₽` : ''}
           </div>
           <button 
@@ -141,6 +121,32 @@ export const HalfCircleBuilder: React.FC = () => {
             Добавить в корзину
           </button>
         </section>
+
+        {/* BottomSheet со списком пицц */}
+        {sheetOpen && (
+          <div className="sheet-overlay" onClick={closeSheet}>
+            <div className="sheet" onClick={(e) => e.stopPropagation()}>
+              <header className="sheet-head">Выберите половинку</header>
+              <div className="sheet-list">
+                {menuItems.map(item => (
+                  <div key={item.id} className="card">
+                    <h3>{item.name}</h3>
+                    <div className="desc">{item.desc}</div>
+                    <div className="row">
+                      <span className="price">{item.price} ₽</span>
+                      <button 
+                        className="btn"
+                        onClick={() => choose(item)}
+                      >
+                        Выбрать
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       {toastMessage && (
