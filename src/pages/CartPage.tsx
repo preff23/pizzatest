@@ -136,8 +136,8 @@ export const CartPage: React.FC = () => {
               <div className="info">
                 <h3 className="name">
                   {item.name}
-                  {isHalf && <span className="half-badge">½ + ½</span>}
                 </h3>
+                {isHalf && <p className="half-subtitle">Собрано из половинок</p>}
                 <p className="price">{item.price.toLocaleString('ru-RU')} ₽</p>
               </div>
               

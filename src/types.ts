@@ -13,7 +13,7 @@ export type CartLine =
   | { kind: 'single', itemId: string, name: string, price: number, qty: number }
   | { kind: 'half', leftId: string, rightId: string, name: string, price: number, qty: number }
 
-export function halfPrice(pA:number, pB:number){
+export function halfPrice(pA: number, pB: number) {
   // цена считается как половины; округление вверх
   return Math.ceil(pA/2 + pB/2)
 }

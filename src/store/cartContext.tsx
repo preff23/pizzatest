@@ -49,7 +49,7 @@ const cartReducer = (state: CartLine[], action: CartAction): CartLine[] => {
         kind: 'half',
         leftId: action.payload.leftId,
         rightId: action.payload.rightId,
-        name: `${action.payload.leftName} + ${action.payload.rightName}`,
+        name: `½ ${action.payload.leftName} + ½ ${action.payload.rightName}`,
         price: halfPrice(action.payload.leftPrice, action.payload.rightPrice),
         qty: 1
       }];
