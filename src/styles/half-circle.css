@@ -5,64 +5,254 @@
 /* корень */
 .hc{ padding:16px 16px 96px; }
 
+/* Заголовок с кнопкой назад */
+.hc-header{
+  display: flex;
+  align-items: center;
+  padding: 16px 0 8px;
+  margin-bottom: 8px;
+}
+
+.back-btn{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: 1.5px solid #111318;
+  border-radius: 999px;
+  background: transparent;
+  color: #111318;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover{
+  background: #111318;
+  color: white;
+}
+
+.back-btn:active{
+  transform: scale(0.98);
+}
+
 /* Блок с кругом */
 .hc-visual{ display:flex; justify-content:center; margin:8px 0 12px; }
 .hc-disk{
-  /* ВСЕГДА СОВЕРШЕННЫЙ КРУГ */
+  display:flex; justify-content:center; align-items:center;
   width: clamp(220px, 62vw, 340px);
   aspect-ratio: 1 / 1;
+}
+
+.hc-circle{
+  position: relative;
+  width: 100%; height: 100%;
   border-radius: 50%;
-  position: relative; isolation:isolate;
-  border:1px solid var(--line);
-  background:
-    radial-gradient(ellipse at 60% 40%, rgba(255,255,255,.36), rgba(0,0,0,.03));
+  overflow: hidden;                /* ВАЖНО: обрезаем всё лишнее */
+  border: 1px solid rgba(0,0,0,.14);
+  background: radial-gradient(ellipse at 60% 40%, rgba(255,255,255,.36), rgba(0,0,0,.03));
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.45);
+  isolation:isolate;
 }
 
-/* вертикальная линия разделения */
-.hc-disk .divider{ position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--line); }
+/* вертикальная линия */
+.hc-circle .divider{
+  position:absolute; left:50%; top:0; bottom:0; width:1px;
+  transform: translateX(-.5px);     /* пиксель-выравнивание */
+  background: rgba(0,0,0,.14);
+}
 
-/* половинки как кнопки */
+/* половинки */
 .slice{
-  position:absolute; inset:0;
-  width:50%; border:none; background:transparent; cursor:pointer;
-  transition: box-shadow .18s ease, background .18s ease, transform .18s ease;
+  position:absolute; top:0; bottom:0; width:50%;
   display:flex; align-items:center; justify-content:center; padding:10px;
+  border:0; background: rgba(255,255,255,.72);
+  cursor:pointer; outline:none;
+  transition: box-shadow .18s ease, background .18s ease, transform .18s ease;
 }
-.slice.left{ left:0; right:auto; border-top-left-radius:50%; border-bottom-left-radius:50%; }
-.slice.right{ right:0; left:auto; border-top-right-radius:50%; border-bottom-right-radius:50%; }
+.slice.left  { left:0;  border-top-left-radius:50%; border-bottom-left-radius:50%; }
+.slice.right { right:0; border-top-right-radius:50%; border-bottom-right-radius:50%; }
 
-/* подсветка активной стороны */
-.is-left  .slice.left,
-.is-right .slice.right { box-shadow: inset 0 0 0 2px rgba(0,0,0,.08); background: rgba(255,255,255,.42); }
+/* Эффект при наведении - оранжевое подсвечивание */
+.slice:hover {
+  background: rgba(255, 107, 53, 0.15) !important;
+  box-shadow: inset 0 0 0 2px rgba(255, 107, 53, 0.3) !important;
+}
 
-/* подпись внутри половинки */
-.slice-label{
-  text-align:center; color:var(--ink); font-weight:800;
+/* Эффект при нажатии (для мобильных) */
+.slice:active {
+  background: rgba(255, 107, 53, 0.25) !important;
+  box-shadow: inset 0 0 0 3px rgba(255, 107, 53, 0.4) !important;
+}
+
+/* активная сторона подсвечивается чуть сильнее */
+.hc-circle.is-left  .slice.left,
+.hc-circle.is-right .slice.right{
+  background: rgba(255,255,255,.86);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.08);
+}
+
+.slice .slice-label{
+  text-align:center; font-weight:800; color:#111318;
   line-height:1.1; letter-spacing:.02em;
   font-size: clamp(12px, 2.8vw, 16px);
-  max-width:85%; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
-  animation: labelPop .16s ease-out;
+  max-width:85%; overflow:hidden; text-overflow:ellipsis;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
 }
 
-/* кнопка очистки выбранной половинки */
-.slice-clear{ position:absolute; top:8px; right:10px; color:var(--muted); font-weight:700; }
 
-/* анимации */
+/* Микро-анимации */
 @keyframes labelPop { from{ opacity:0; transform:scale(.98)} to{opacity:1; transform:scale(1)} }
+.slice .slice-label{ animation: labelPop .16s ease-out; }
 
-/* Цена и кнопка */
-.hc-cta{ max-width:360px; margin: 12px auto 0; text-align:center; }
-.hc-price{ font-weight:800; font-size:22px; margin-bottom:12px; transition: opacity .16s ease, transform .16s ease; }
-.hc-price.upd { opacity:0; transform:translateY(2px) }
-
-.hc-add{
-  width:100%; padding:14px 18px; border-radius:999px;
-  border:1.5px solid var(--ink); background:transparent; color:var(--ink); font-weight:800;
-  transition: transform .12s ease, opacity .12s ease;
+/* Эффект при тапе */
+@keyframes sliceTap { 
+  0% { background: rgba(255,255,255,.72); }
+  50% { background: rgba(255,255,255,.92); }
+  100% { background: rgba(255,255,255,.72); }
 }
+.slice.tap-effect { animation: sliceTap .12s ease-out; }
+
+/* Постоянная пульсация */
+@keyframes constantPulse {
+  0% { 
+    transform: scale(1);
+  }
+  50% { 
+    transform: scale(1.02);
+  }
+  100% { 
+    transform: scale(1);
+  }
+}
+
+@keyframes sliceFill {
+  0% { background: rgba(255,255,255,.72); transform: scale(1); }
+  50% { background: rgba(255,255,255,.95); transform: scale(1.02); }
+  100% { background: rgba(255,255,255,.86); transform: scale(1); }
+}
+
+@keyframes priceBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes buttonShine {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Классы для анимаций */
+.hc-circle.pulse { animation: constantPulse 2s ease-in-out infinite; }
+.slice.filled { animation: sliceFill 0.4s ease-out; }
+.hc-price.bounce { animation: priceBounce 0.3s ease-out; }
+.hc-add.shine { 
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+  background-size: 200% 100%;
+  animation: buttonShine 0.8s ease-out;
+}
+
+/* ВАУ-эффект: летящая пицца */
+@keyframes pizzaFly {
+  0% { 
+    transform: translateY(0) scale(0.8) rotate(0deg);
+    opacity: 0;
+  }
+  20% { 
+    transform: translateY(-20px) scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  80% { 
+    transform: translateY(-60px) scale(1) rotate(360deg);
+    opacity: 1;
+  }
+  100% { 
+    transform: translateY(-100px) scale(0.6) rotate(450deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pizzaSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.pizza-success {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2000;
+  pointer-events: none;
+  animation: pizzaFly 1.2s ease-out forwards;
+}
+
+.pizza-icon {
+  width: 60px;
+  height: 60px;
+  background: #ff6b35;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+  animation: pizzaSpin 1.2s linear;
+}
+
+.pizza-icon::before {
+  content: '🍕';
+  font-size: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+/* Эффект частиц */
+@keyframes particle {
+  0% { 
+    transform: translate(0, 0) scale(0);
+    opacity: 1;
+  }
+  100% { 
+    transform: translate(var(--x), var(--y)) scale(1);
+    opacity: 0;
+  }
+}
+
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #ff6b35;
+  border-radius: 50%;
+  animation: particle 0.8s ease-out forwards;
+}
+
+.particle:nth-child(1) { --x: -30px; --y: -20px; animation-delay: 0.1s; }
+.particle:nth-child(2) { --x: 30px; --y: -20px; animation-delay: 0.2s; }
+.particle:nth-child(3) { --x: -20px; --y: 30px; animation-delay: 0.3s; }
+.particle:nth-child(4) { --x: 20px; --y: 30px; animation-delay: 0.4s; }
+.particle:nth-child(5) { --x: 0px; --y: -40px; animation-delay: 0.5s; }
+
+
+/* Заголовок в стиле проекта */
+.hc-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #111318;
+  letter-spacing: 0.5px;
+}
+
+/* цена + кнопка (как было) */
+.hc-cta{ max-width:360px; margin:12px auto 0; text-align:center; }
+.hc-price{ font-weight:800; font-size:22px; margin-bottom:12px; transition: opacity .16s ease, transform .16s ease; }
+.hc-price.upd{ opacity:0; transform: translateY(2px); }
+.hc-add{ width:100%; padding:14px 18px; border-radius:999px; border:1.5px solid #111318; background:transparent; color:#111318; font-weight:800; transition: transform .12s ease, opacity .12s ease; }
 .hc-add:disabled{ opacity:.45; pointer-events:none; }
-.hc-add:active{ transform:scale(.98) }
+.hc-add:active{ transform: scale(.98); }
 
 /* Bottom-sheet оболочка */
 .sheet-overlay{ 

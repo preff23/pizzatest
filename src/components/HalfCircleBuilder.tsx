@@ -15,6 +15,12 @@ export const HalfCircleBuilder: React.FC = () => {
   const [right, setRight] = useState<MenuItem|null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [priceUpdate, setPriceUpdate] = useState(false);
+  const [tapEffect, setTapEffect] = useState<'left' | 'right' | null>(null);
+  const [circleGlow, setCircleGlow] = useState(false);
+  const [sliceFill, setSliceFill] = useState<'left' | 'right' | null>(null);
+  const [priceBounce, setPriceBounce] = useState(false);
+  const [buttonShine, setButtonShine] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const prevTotalRef = useRef(0);
 
   const menuItems = useMemo(() => {
@@ -27,15 +33,31 @@ export const HalfCircleBuilder: React.FC = () => {
   useEffect(() => {
     if (total !== prevTotalRef.current && total > 0) {
       setPriceUpdate(true);
-      const timer = setTimeout(() => setPriceUpdate(false), 160);
+      setPriceBounce(true);
+      
+      const timer1 = setTimeout(() => setPriceUpdate(false), 160);
+      const timer2 = setTimeout(() => setPriceBounce(false), 300);
+      
       prevTotalRef.current = total;
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
     }
   }, [total]);
 
   function openSheet(side: Side) { 
     setActiveSide(side); 
-    setSheetOpen(true); 
+    setSheetOpen(true);
+    
+    // Tap effect
+    setTapEffect(side);
+    setTimeout(() => setTapEffect(null), 120);
+    
+    // Haptic feedback
+    if (window.Telegram?.WebApp?.HapticFeedback?.impactOccurred) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
   }
 
   function closeSheet() { 
@@ -43,14 +65,31 @@ export const HalfCircleBuilder: React.FC = () => {
   }
 
   function choose(item: MenuItem) {
-    if (activeSide === 'left') setLeft(item); 
-    else setRight(item);
+    if (activeSide === 'left') {
+      setLeft(item);
+      setSliceFill('left');
+    } else {
+      setRight(item);
+      setSliceFill('right');
+    }
     setSheetOpen(false);
+    
+    // Reset slice fill animation
+    setTimeout(() => setSliceFill(null), 400);
+    
     if (activeSide === 'left') setActiveSide('right'); // плавный сценарий 1/2 → 2/2
   }
 
   function addHalfToCart() {
     if (!left || !right) return;
+    
+    // Button shine effect
+    setButtonShine(true);
+    setTimeout(() => setButtonShine(false), 800);
+    
+    // ВАУ-эффект: летящая пицца
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 1200);
     
     addHalf(
       left.id,
@@ -72,49 +111,41 @@ export const HalfCircleBuilder: React.FC = () => {
 
   return (
     <div className="container">
+      <div className="hc-header">
+        <button className="back-btn" onClick={() => window.location.href = '/'}>
+          ← Назад
+        </button>
+      </div>
       <main className="hc">
+        <h1 className="hc-title">Собери свою пиццу</h1>
         <section className="hc-visual">
-          <div className={`hc-disk ${activeSide === 'left' ? 'is-left' : 'is-right'}`}>
-            <button 
-              className="slice left"  
-              aria-label="Левая половинка"  
-              onClick={() => openSheet('left')}
-            >
-              <span className="slice-label">{left?.name || 'Левая ½'}</span>
-              {!!left && (
-                <span 
-                  className="slice-clear" 
-                  onClick={(e) => { e.stopPropagation(); setLeft(null); }}
-                >
-                  ×
-                </span>
-              )}
-            </button>
-            <div className="divider" />
-            <button 
-              className="slice right" 
-              aria-label="Правая половинка" 
-              onClick={() => openSheet('right')}
-            >
-              <span className="slice-label">{right?.name || 'Правая ½'}</span>
-              {!!right && (
-                <span 
-                  className="slice-clear" 
-                  onClick={(e) => { e.stopPropagation(); setRight(null); }}
-                >
-                  ×
-                </span>
-              )}
-            </button>
+          <div className="hc-disk">
+            <div className={`hc-circle ${activeSide === 'left' ? 'is-left' : 'is-right'} pulse`}>
+              <button 
+                className={`slice left ${tapEffect === 'left' ? 'tap-effect' : ''} ${sliceFill === 'left' ? 'filled' : ''}`}
+                aria-label="Левая половинка"  
+                onClick={() => openSheet('left')}
+              >
+                <span className="slice-label">{left?.name || 'Левая ½'}</span>
+              </button>
+              <div className="divider" />
+              <button 
+                className={`slice right ${tapEffect === 'right' ? 'tap-effect' : ''} ${sliceFill === 'right' ? 'filled' : ''}`}
+                aria-label="Правая половинка" 
+                onClick={() => openSheet('right')}
+              >
+                <span className="slice-label">{right?.name || 'Правая ½'}</span>
+              </button>
+            </div>
           </div>
         </section>
 
         <section className="hc-cta">
-          <div className={`hc-price ${priceUpdate ? 'upd' : ''}`}>
+          <div className={`hc-price ${priceUpdate ? 'upd' : ''} ${priceBounce ? 'bounce' : ''}`}>
             {total > 0 ? `${total.toLocaleString('ru-RU')} ₽` : ''}
           </div>
           <button 
-            className="hc-add" 
+            className={`hc-add ${buttonShine ? 'shine' : ''}`}
             disabled={!left || !right} 
             onClick={addHalfToCart}
           >
@@ -154,6 +185,19 @@ export const HalfCircleBuilder: React.FC = () => {
           message={toastMessage} 
           onClose={() => setToastMessage(null)} 
         />
+      )}
+
+      {/* ВАУ-эффект: летящая пицца */}
+      {showSuccess && (
+        <div className="pizza-success">
+          <div className="pizza-icon">
+            <div className="particle"></div>
+            <div className="particle"></div>
+            <div className="particle"></div>
+            <div className="particle"></div>
+            <div className="particle"></div>
+          </div>
+        </div>
       )}
     </div>
   );

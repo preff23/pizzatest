@@ -34,8 +34,7 @@ export const MenuPage: React.FC = () => {
     },
     { 
       key: 'Build', 
-      label: 'Собрать', 
-      count: 0 
+      label: 'Собрать'
     },
   ];
 
