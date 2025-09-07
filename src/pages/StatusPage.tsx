@@ -33,21 +33,13 @@ export const StatusPage: React.FC = () => {
 
         <div className="order-items">
           <h3>Ваш заказ:</h3>
-          {items.map((item) => {
-            const itemId = item.kind === 'single' ? item.itemId : `${item.leftId}+${item.rightId}`;
-            const isHalf = item.kind === 'half';
-            
-            return (
-              <div key={itemId} className="order-item">
-                <span className="name">
-                  {item.name}
-                  {isHalf && <span className="half-badge">½ + ½</span>}
-                </span>
-                <span className="qty">×{item.qty}</span>
-                <span className="price">{(item.price * item.qty).toLocaleString('ru-RU')} ₽</span>
-              </div>
-            );
-          })}
+          {items.map(item => (
+            <div key={item.id} className="order-item">
+              <span className="name">{item.name}</span>
+              <span className="qty">×{item.qty}</span>
+              <span className="price">{(item.price * item.qty).toLocaleString('ru-RU')} ₽</span>
+            </div>
+          ))}
         </div>
 
         <div className="status-actions">

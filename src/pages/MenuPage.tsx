@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import SegmentedChips from '../components/SegmentedChips';
 import QtyButton from '../components/QtyButton';
 import Toast from '../components/Toast';
-import { HalfBuilderSheet } from '../components/HalfBuilderSheet';
 import { MENU } from '../data/menu';
 import { useCart } from '../store/cartContext';
 
@@ -12,7 +11,6 @@ export const MenuPage: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [listVisible, setListVisible] = useState(true);
-  const [showHalfBuilder, setShowHalfBuilder] = useState(false);
 
   const filteredMenu = useMemo(() => {
     return MENU.filter(item => {
@@ -82,15 +80,6 @@ export const MenuPage: React.FC = () => {
       <h2 className="section-title">{selectedCategory.toUpperCase()}</h2>
       <div className="section-rule"></div>
       
-      {selectedCategory === 'Pizza' && (
-        <button 
-          className="chip build-half"
-          onClick={() => setShowHalfBuilder(true)}
-        >
-          Собрать из половинок
-        </button>
-      )}
-      
       <div className={`list-anim ${listVisible ? 'show' : ''}`}>
         {isLoading ? (
           // Skeleton loading
@@ -123,12 +112,6 @@ export const MenuPage: React.FC = () => {
         <Toast 
           message={toastMessage} 
           onClose={() => setToastMessage(null)} 
-        />
-      )}
-      
-      {showHalfBuilder && (
-        <HalfBuilderSheet
-          onClose={() => setShowHalfBuilder(false)}
         />
       )}
     </div>
