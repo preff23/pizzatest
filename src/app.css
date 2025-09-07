@@ -484,6 +484,228 @@ body {
   font-size: 16px;
 }
 
+/* Half pizza styles */
+.half-badge {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 8px;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.half-selector {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.half-selector button {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.half-selector button:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.half-selector button.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.half-selector button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Half pizza modal */
+.half-pizza-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.half-pizza-content {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.half-pizza-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.half-pizza-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.close-btn:hover {
+  background: var(--surface);
+}
+
+.half-pizza-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--surface);
+}
+
+.selected-pizza {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.pizza-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+}
+
+.pizza-price {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.plus-sign {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.pizza-list {
+  padding: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.pizza-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+}
+
+.pizza-option:hover {
+  border-color: var(--primary);
+  background: var(--surface);
+}
+
+.pizza-option.selected {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: white;
+}
+
+.pizza-option.selected .pizza-name,
+.pizza-option.selected .pizza-price {
+  color: white;
+}
+
+.half-pizza-actions {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.half-pizza-actions .button {
+  flex: 1;
+}
+
+/* Pizza card actions */
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn--half {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  padding: 8px 12px;
+  min-width: 60px;
+}
+
+.btn--half:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.btn--primary {
+  background: var(--primary);
+  color: white;
+  border: 1px solid var(--primary);
+  flex: 1;
+}
+
 /* Responsive adjustments */
 @media (max-width: 480px) {
   .header {
