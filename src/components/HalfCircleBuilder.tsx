@@ -16,7 +16,6 @@ export const HalfCircleBuilder: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [priceUpdate, setPriceUpdate] = useState(false);
   const [tapEffect, setTapEffect] = useState<'left' | 'right' | null>(null);
-  const [circleGlow, setCircleGlow] = useState(false);
   const [sliceFill, setSliceFill] = useState<'left' | 'right' | null>(null);
   const [priceBounce, setPriceBounce] = useState(false);
   const [buttonShine, setButtonShine] = useState(false);
