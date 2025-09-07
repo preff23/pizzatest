@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { MENU } from '../data/menu';
 import { useCart } from '../store/cartContext';
 import { halfPrice } from '../types';
@@ -10,37 +10,45 @@ export const HalfBuilderPage: React.FC = () => {
   const [left, setLeft] = useState<typeof MENU[0] | null>(null);
   const [right, setRight] = useState<typeof MENU[0] | null>(null);
   const [selectedTab, setSelectedTab] = useState<'Pizza' | 'Vegan'>('Pizza');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [activeSide, setActiveSide] = useState<'left' | 'right'>('left');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [totalAnimation, setTotalAnimation] = useState(false);
+  const prevTotalRef = useRef(0);
 
   const availablePizzas = useMemo(() => {
     return MENU.filter(item => {
       const matchesCategory = item.category === selectedTab;
-      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
+      return matchesCategory;
     });
-  }, [selectedTab, searchQuery]);
+  }, [selectedTab]);
 
   const total = left && right ? halfPrice(left.price, right.price) : 0;
 
+  // Анимация изменения цены
+  useEffect(() => {
+    if (total !== prevTotalRef.current) {
+      setTotalAnimation(true);
+      const timer = setTimeout(() => setTotalAnimation(false), 160);
+      prevTotalRef.current = total;
+      return () => clearTimeout(timer);
+    }
+  }, [total]);
+
   const handlePick = (item: typeof MENU[0]) => {
-    if (!left) {
+    if (activeSide === 'left') {
       setLeft(item);
-    } else if (!right) {
-      setRight(item);
+      setActiveSide('right');
     } else {
-      setLeft(item); // Replace left slot
+      setRight(item);
     }
   };
 
-
-  const focusLeft = () => {
-    // Focus logic for left slot
+  const swap = () => {
+    const temp = left;
+    setLeft(right);
+    setRight(temp);
   };
 
-  const focusRight = () => {
-    // Focus logic for right slot
-  };
 
   const handleAddToCart = () => {
     if (left && right) {
@@ -71,12 +79,6 @@ export const HalfBuilderPage: React.FC = () => {
     <div className="container">
       <main className="hb">
         <aside className="hb-left">
-          <input 
-            className="hb-search" 
-            placeholder="Поиск"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
           <div className="chips">
             <button 
               className={`chip ${selectedTab === 'Pizza' ? 'is-active' : ''}`}
@@ -105,46 +107,81 @@ export const HalfBuilderPage: React.FC = () => {
 
         <section className="hb-right">
           <div className="hb-disk">
-            <div className="slice left">{left?.name || 'Левая ½'}</div>
-            <div className="slice right">{right?.name || 'Правая ½'}</div>
+            <div className={`slice left ${activeSide === 'left' ? 'active' : ''}`}>
+              {left?.name || 'Левая ½'}
+            </div>
+            <div className={`slice right ${activeSide === 'right' ? 'active' : ''}`}>
+              {right?.name || 'Правая ½'}
+            </div>
           </div>
 
           <div className="hb-slots">
-            <div className={`hb-slot ${left ? 'filled' : ''}`}>
+            <div 
+              className={`hb-slot ${activeSide === 'left' ? 'active' : ''} ${left ? 'filled' : ''}`} 
+              onClick={() => setActiveSide('left')}
+            >
               <div className="meta">
                 <div className="label">Левая половинка</div>
                 <div className="value">{left?.name || 'Выберите половинку'}</div>
               </div>
               <div className="actions">
-                <button className="hb-btn" onClick={() => focusLeft()}>Изменить</button>
-                {left && <button className="hb-btn" onClick={() => setLeft(null)}>Очистить</button>}
+                <button 
+                  className="hb-btn" 
+                  onClick={(e) => { e.stopPropagation(); swap(); }}
+                >
+                  Поменять местами
+                </button>
+                {left && (
+                  <button 
+                    className="hb-btn" 
+                    onClick={(e) => { e.stopPropagation(); setLeft(null); }}
+                  >
+                    Очистить
+                  </button>
+                )}
               </div>
             </div>
 
-            <div className={`hb-slot ${right ? 'filled' : ''}`}>
+            <div 
+              className={`hb-slot ${activeSide === 'right' ? 'active' : ''} ${right ? 'filled' : ''}`} 
+              onClick={() => setActiveSide('right')}
+            >
               <div className="meta">
                 <div className="label">Правая половинка</div>
                 <div className="value">{right?.name || 'Выберите половинку'}</div>
               </div>
               <div className="actions">
-                <button className="hb-btn" onClick={() => focusRight()}>Изменить</button>
-                {right && <button className="hb-btn" onClick={() => setRight(null)}>Очистить</button>}
+                <button 
+                  className="hb-btn" 
+                  onClick={(e) => { e.stopPropagation(); swap(); }}
+                >
+                  Поменять местами
+                </button>
+                {right && (
+                  <button 
+                    className="hb-btn" 
+                    onClick={(e) => { e.stopPropagation(); setRight(null); }}
+                  >
+                    Очистить
+                  </button>
+                )}
               </div>
             </div>
           </div>
 
-          <div className="hb-total">
-            <div className="muted">½ {left?.name || '—'} + ½ {right?.name || '—'}</div>
-            <div className="sum">{total > 0 ? `${total.toLocaleString('ru-RU')} ₽` : ''}</div>
+          <div className="hb-sticky">
+            <div className="hb-summary">½ {left?.name || '—'} + ½ {right?.name || '—'}</div>
+            <div className={`hb-total ${totalAnimation ? 'on-total-change' : ''}`}>
+              {total > 0 ? `${total.toLocaleString('ru-RU')} ₽` : ''}
+            </div>
+            <button 
+              className="hb-add" 
+              disabled={!left || !right} 
+              onClick={handleAddToCart}
+            >
+              Добавить в корзину
+            </button>
           </div>
-
-          <button 
-            className="hb-add" 
-            disabled={!left || !right} 
-            onClick={handleAddToCart}
-          >
-            Добавить в корзину
-          </button>
         </section>
       </main>
 
