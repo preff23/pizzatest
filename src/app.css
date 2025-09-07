@@ -7,7 +7,7 @@
 
 body {
   font-family: system-ui, -apple-system, 'Inter', sans-serif;
-  background-color: #f8f9fa;
+  background-color: #d9d9d9;
   color: #333;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -18,7 +18,7 @@ body {
   max-width: 560px;
   margin: 0 auto;
   min-height: 100vh;
-  background-color: #fff;
+  background-color: #d9d9d9;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
