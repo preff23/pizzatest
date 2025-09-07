@@ -7,7 +7,7 @@ import { useCart } from '../store/cartContext';
 
 export const MenuPage: React.FC = () => {
   const { add, remove } = useCart();
-  const [selectedCategory, setSelectedCategory] = useState<'Pizza' | 'Vegan' | 'Test'>('Test');
+  const [selectedCategory, setSelectedCategory] = useState<'Pizza' | 'Vegan'>('Pizza');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [listVisible, setListVisible] = useState(true);
@@ -21,11 +21,6 @@ export const MenuPage: React.FC = () => {
 
   const tabs = [
     { 
-      key: 'Test', 
-      label: 'Test', 
-      count: MENU.filter(item => item.category === 'Test').length 
-    },
-    { 
       key: 'Pizza', 
       label: 'Pizza', 
       count: MENU.filter(item => item.category === 'Pizza').length 
@@ -38,7 +33,7 @@ export const MenuPage: React.FC = () => {
   ];
 
   const handleCategoryChange = (key: string) => {
-    const newCategory = key as 'Pizza' | 'Vegan' | 'Test';
+    const newCategory = key as 'Pizza' | 'Vegan';
     
     // Hide list with animation
     setListVisible(false);

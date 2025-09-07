@@ -44,8 +44,6 @@ export const CartPage: React.FC = () => {
           throw new Error('Корзина пуста. Добавьте товары в корзину.');
         } else if (error.error === 'NO_USER') {
           throw new Error('Не удалось получить данные пользователя. Попробуйте перезапустить приложение.');
-        } else if (error.error === 'MINIMUM_AMOUNT_TOO_LOW') {
-          throw new Error('Минимальная сумма заказа 50 рублей. Добавьте больше товаров.');
         } else {
           throw new Error(error.error || 'Ошибка при отправке счета. Попробуйте еще раз.');
         }
