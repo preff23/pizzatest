@@ -67,7 +67,13 @@ export const CartPage: React.FC = () => {
       clear();
     } catch (error) {
       console.error('Error during checkout:', error);
-      alert('Ошибка при оформлении заказа. Попробуйте еще раз.');
+      
+      // Более детальная обработка ошибок
+      if (error instanceof Error) {
+        alert(`Ошибка: ${error.message}`);
+      } else {
+        alert('Ошибка при оформлении заказа. Попробуйте еще раз.');
+      }
     }
   };
 
