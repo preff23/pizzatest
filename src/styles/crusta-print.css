@@ -38,7 +38,7 @@ body::before {
   content: '';
   position: fixed;
   top: 0;
-  right: -25%;
+  right: -10%;
   width: 80%;
   height: 100vh;
   background: url('/PHON.PNG') no-repeat right top;
@@ -53,7 +53,7 @@ body::before {
 /* Mobile optimizations for Telegram WebApp */
 @media (max-width: 768px) {
   body::before {
-    right: -20%;
+    right: -5%;
     width: 72%;
     background-size: 72% auto;
     background-position: right calc(var(--headerH, 56px) + 5px);
