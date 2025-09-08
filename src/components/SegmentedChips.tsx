@@ -13,16 +13,16 @@ type Props = {
 
 export default function SegmentedChips({ tabs, active, onChange }: Props) {
   return (
-    <div className="chips">
+    <div className="tabs">
       {tabs.map(tab => (
         <button
           key={tab.key}
           className={`chip ${active === tab.key ? 'active' : ''}`}
           onClick={() => onChange(tab.key)}
         >
-          {tab.label}
+          <span>{tab.label}</span>
           {tab.count !== undefined && (
-            <span className="count">{tab.count}</span>
+            <span className="badge">{tab.count}</span>
           )}
         </button>
       ))}

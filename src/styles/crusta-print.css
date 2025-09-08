@@ -185,29 +185,76 @@ body::before {
 .subtitle{ color:var(--muted); font-size:12px; margin-top:2px; }
 
 /* Chips (Pizza/Vegan) */
-.chips{ display:flex; gap:8px; margin:16px 0 6px; }
+.tabs{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* три чипа одинаковой ширины */
+  gap: 12px;                               /* одинаковый межэлементный интервал */
+  padding: 0 16px;                         /* такие же поля как у контента экрана */
+  box-sizing: border-box;
+  margin: 12px 0 8px;
+}
+
+/* сам чип растягивается на всю свою колонку и центрирует контент */
 .chip{
-  padding:8px 14px; border-radius:999px; border:1px solid var(--line);
-  background:var(--surface); color:var(--muted); font-weight:600; cursor:pointer;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;                 /* расстояние между текстом и бейджем */
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.16);
+  background: #fff;
+  color: #111318;
+  font-weight: 700;
+  line-height: 1;           /* чтобы высота была одинаковой на всех чипах */
+  white-space: nowrap;
+  cursor: pointer;
 }
-.chip.active{ 
-  background: #e9e9e9;
-  font-weight: 600;
-  border: 1px solid #d0d0d0;
-  color: var(--ink);
+
+/* активный чип */
+.chip.active{
+  border-color: rgba(0,0,0,.28);
+  background: #f7f7f7;
 }
-.chip .count{ margin-left:8px; opacity:.7; }
+
+/* бейдж количества (высота/линия одинаковые) */
+.chip .badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #ececec;
+  font-size: 12px;
+  line-height: 1;           /* фиксируем одинаковую высоту */
+}
 
 /* Section heading */
 .section-title{
+  text-align: center;       /* центрирование заголовка PIZZA */
+  font-weight: 800;
+  letter-spacing: .06em;
+  padding: 8px 16px 12px;
+  border-bottom: 1px solid rgba(0,0,0,.12);  /* оставить текущую разделительную линию */
+  margin: 4px 0 8px;
   position: static;
   top: auto;
   z-index: auto;
   background: transparent;
-  font-size:18px; font-weight:900; letter-spacing:.06em; text-transform:uppercase;
-  margin:24px 0 8px;
+  font-size:18px; 
+  text-transform:uppercase;
 }
 .section-rule{ height:1px; background:var(--line); }
+
+/* адаптивный случай (если вдруг что-то не влазит по ширине) — можно сузить шрифт */
+@media (max-width: 340px){
+  .chip{ padding: 9px 10px; font-size: 14px; }
+  .chip .badge{ min-width: 20px; height: 20px; font-size: 11px; }
+}
 
 /* Dish row */
 .row{
