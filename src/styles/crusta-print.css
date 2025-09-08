@@ -41,7 +41,7 @@ body::before {
   right: -25%;
   width: 80%;
   height: 100vh;
-  background: url('/liquidchrome.png') no-repeat right top;
+  background: url('/PHON.PNG') no-repeat right top;
   background-size: 80% auto;
   background-position: right calc(var(--headerH, 56px) + 10px);
   filter: blur(2px);
