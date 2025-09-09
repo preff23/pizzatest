@@ -52,10 +52,10 @@ body::before {
 @media (max-width: 768px) {
   body::before {
     right: 0;
-    width: 100%;
+    width: 120%;
     height: 100vh;
-    background-size: cover;
-    background-position: center;
+    background-size: 120% auto;
+    background-position: right top;
     background-repeat: no-repeat;
   }
   
