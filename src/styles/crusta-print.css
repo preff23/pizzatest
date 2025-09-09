@@ -264,13 +264,13 @@ body::before {
   letter-spacing:.02em;
 }
 .row .desc{
-  margin:0; font-size:14px; line-height:1.55; color:var(--muted); max-width:58ch;
+  margin:0; font-size:14px; line-height:1.55; color:#111318; max-width:58ch;
 }
 .row .aside{
   display:flex; flex-direction:column; align-items:flex-end; gap:10px;
 }
 .price{
-  font-size:16px; font-weight:800; white-space:nowrap;
+  font-size:16px; font-weight:800; white-space:nowrap; color:#111318;
 }
 
 /* Add button: монохромный круг */
