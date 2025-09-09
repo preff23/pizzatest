@@ -254,6 +254,14 @@ body::before {
   .chip .badge{ min-width: 20px; height: 20px; font-size: 11px; }
 }
 
+/* На сверхсветлых участках слегка усиливаем контур (адаптация по фону) */
+@media (prefers-reduced-transparency: no-preference){
+  .row{
+    /* выравнивание правого блока, чтобы капсулы не «слипались» со строкой */
+    --right-gap: 12px;
+  }
+}
+
 /* Dish row */
 .row{
   display:grid; grid-template-columns: 1fr auto; gap:16px;
@@ -270,20 +278,48 @@ body::before {
   display:flex; flex-direction:column; align-items:flex-end; gap:10px;
 }
 .price{
-  font-size:16px; font-weight:800; white-space:nowrap; color:#2C2C2C;
+  color: #111318;               /* почти черный для контраста */
+  font-weight: 800;
+  font-size: 16px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.68);      /* светлая вуаль */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(0,0,0,0.10);      /* тонкая обводка */
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
-/* Add button: монохромный круг */
+/* Add button: frosted glass капсула */
 .btn-add{
-  width:36px; height:36px; border-radius:50%;
-  background:transparent; color:var(--accent); border:1.5px solid var(--accent);
-  font-size:20px; line-height:1; display:inline-flex; align-items:center; justify-content:center;
-  transition: transform 120ms ease;
+  width: 40px; 
+  height: 40px; 
+  border-radius: 999px;
+  background: rgba(255,255,255,0.68);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(0,0,0,0.10);
+  color: #111318;
+  font-size: 20px; 
+  line-height: 1; 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  transition: transform 120ms ease, background 120ms ease;
 }
+/* Hover эффекты для frosted glass элементов */
+.price:hover,
+.btn-add:hover{
+  background: rgba(255,255,255,0.78);
+}
+
 .btn-add:active{ 
-  transform: scale(0.95); 
-  background:var(--accent); 
-  color:var(--surface); 
+  transform: scale(0.98); 
+  background: rgba(255,255,255,0.85);
 }
 .btn-add.bounce{
   animation: bounce 150ms ease-out;
