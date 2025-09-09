@@ -262,55 +262,108 @@ body::before {
   }
 }
 
+/* На очень светлых фонах контур можно ослабить */
+@media (prefers-contrast: more){
+  .row .desc{
+    text-shadow:
+      0 1px 0 rgba(255,255,255,.18),
+      0 0 1px rgba(0,0,0,.12);
+  }
+}
+
 /* Dish row */
 .row{
   display:grid; grid-template-columns: 1fr auto; gap:16px;
-  padding:14px 0; border-bottom:1px solid var(--line);
+  padding:14px 0; 
+  border-bottom: 1px solid transparent; /* убираем старую линию */
+  position: relative;
+}
+.row::after{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0,0,0,.08), rgba(0,0,0,0) 40%, rgba(0,0,0,.08));
 }
 .row h3{
   margin:0 0 6px; font-size:16px; font-weight:800; text-transform:uppercase;
   letter-spacing:.02em;
 }
 .row .desc{
-  margin:0; font-size:14px; line-height:1.55; color:#4A4A4A; max-width:58ch;
+  margin:0; 
+  font-size:15px; 
+  line-height:1.35; 
+  color:#2E2E2E;                /* темнее, чем было */
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  max-width:58ch;
+  margin-right: 72px;  /* подправь под конкретный правый столбец */
+  /* деликатный контур для тёмных пятен фона, почти незаметен на светлом */
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.25),
+    0 0 1px rgba(0,0,0,.10);
 }
 .row .aside{
   display:flex; flex-direction:column; align-items:flex-end; gap:10px;
 }
 .price{
-  color: #111318;               /* почти черный для контраста */
+  color: #111318; 
   font-weight: 800;
   font-size: 16px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.68);      /* светлая вуаль */
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(0,0,0,0.10);      /* тонкая обводка */
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-}
-
-/* Add button: frosted glass капсула */
-.btn-add{
-  width: 40px; 
-  height: 40px; 
-  border-radius: 999px;
   background: rgba(255,255,255,0.68);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(0,0,0,0.10);
-  color: #111318;
-  font-size: 20px; 
+  border: 1px solid rgba(0,0,0,0.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
   line-height: 1; 
   display: inline-flex; 
   align-items: center; 
   justify-content: center;
-  transition: transform 120ms ease, background 120ms ease;
+  white-space: nowrap;
 }
+
+/* Add button: премиальный outline-стиль + блик */
+.btn-add{
+  width: 44px; 
+  height: 44px; 
+  border-radius: 999px;
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  background: rgba(255,255,255,0.68);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(0,0,0,0.18);                  /* outline */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35);     /* внутренний блик */
+  color: #111318;
+  transition: transform .14s cubic-bezier(.2,.8,.2,1), background .14s ease, border-color .14s ease;
+  font-size: 20px; 
+  line-height: 1;
+}
+.btn-add svg, 
+.btn-add i{
+  color: #111318;
+  stroke-width: 2.25px;
+}
+.btn-add:hover{
+  background: rgba(255,255,255,0.78);
+  border-color: rgba(0,0,0,0.22);
+}
+.btn-add:active{
+  transform: scale(0.96);
+}
+
+/* pulse-анимация на быстрый тап (добавим классом из JS) */
+@keyframes addPulse {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.btn-add.pulse { animation: addPulse 180ms cubic-bezier(.2,.8,.2,1); }
 /* Hover эффекты для frosted glass элементов */
 .price:hover,
 .btn-add:hover{

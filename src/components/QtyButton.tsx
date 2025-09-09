@@ -22,7 +22,7 @@ export default function QtyButton({ onAdd, onRemove }: Props) {
     
     // Pulse animation
     setIsPulsing(true);
-    setTimeout(() => setIsPulsing(false), 120);
+    setTimeout(() => setIsPulsing(false), 180);
   };
 
   const handleRemove = () => {
@@ -38,14 +38,14 @@ export default function QtyButton({ onAdd, onRemove }: Props) {
       
       // Pulse animation
       setIsPulsing(true);
-      setTimeout(() => setIsPulsing(false), 120);
+      setTimeout(() => setIsPulsing(false), 180);
     }
   };
 
   if (count === 0) {
     return (
       <button
-        className="btn-add"
+        className={`btn-add ${isPulsing ? 'pulse' : ''}`}
         aria-label="Добавить"
         onClick={handleAdd}
       >
