@@ -6,9 +6,22 @@ import { BottomNav } from './components/BottomNav';
 import { MenuPage } from './pages/MenuPage';
 import { CartPage } from './pages/CartPage';
 import { StatusPage } from './pages/StatusPage';
+import BootLoader from './components/BootLoader';
 import { Page } from './types';
 import './styles/crusta-print.css';
 import './styles/bottom-rail.css';
+
+// Путь к фоновому изображению
+const BG_URL = "/liquidchrome.png";
+
+function preloadImage(src: string) {
+  return new Promise<void>((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = reject;
+    img.src = src;
+  });
+}
 
 // Расширяем Window интерфейс для Telegram WebApp
 declare global {
@@ -83,14 +96,48 @@ declare global {
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>('menu');
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    // Telegram WebApp ready – если у нас есть объект tg
+    try { 
+      (window as any)?.Telegram?.WebApp?.ready?.(); 
+    } catch {}
+
+    async function boot() {
+      const wait = (ms: number) => new Promise(r => setTimeout(r, ms));
+
+      // 1) грузим фон
+      const imgPromise = preloadImage(BG_URL);
+
+      // 2) ждём шрифты (если поддерживаются)
+      const fontsPromise = (document as any).fonts ? (document as any).fonts.ready : Promise.resolve();
+
+      // 3) первичные данные (если уже есть кэш – Promise.resolve())
+      const dataPromise = Promise.resolve();
+
+      // показываем лоадер не меньше 250мс, чтобы не было "мигания"
+      await Promise.all([imgPromise, fontsPromise, dataPromise, wait(250)]);
+
+      setReady(true);
+    }
+    boot();
+  }, []);
+
+  // Прячем лоадер когда всё готово
+  useEffect(() => {
+    const el = document.querySelector(".boot-backdrop") as HTMLElement | null;
+    if (!el) return;
+    if (ready) {
+      // малюсенькая задержка для плавности
+      requestAnimationFrame(() => el.setAttribute("hidden", ""));
+    }
+  }, [ready]);
 
   useEffect(() => {
     // Инициализация Telegram WebApp
     if (window.Telegram?.WebApp) {
       const tg = window.Telegram.WebApp;
-      
-      // Готовим приложение
-      tg.ready();
       
       // Расширяем на весь экран
       tg.expand();
@@ -142,18 +189,24 @@ const App: React.FC = () => {
   };
 
   return (
-    <CartProvider>
-      <div className="app">
-        <Header />
-        <main className="container">
-          {renderCurrentPage()}
-        </main>
-        <BottomNav 
-          currentPage={currentPage} 
-          onPageChange={setCurrentPage} 
-        />
+    <>
+      <div className={`app-root ${ready ? "is-ready" : "is-loading"}`}>
+        <CartProvider>
+          <div className="app">
+            <Header />
+            <main className="container">
+              {renderCurrentPage()}
+            </main>
+            <BottomNav 
+              currentPage={currentPage} 
+              onPageChange={setCurrentPage} 
+            />
+          </div>
+        </CartProvider>
       </div>
-    </CartProvider>
+      {/* Лоадер поверх всего до готовности */}
+      <BootLoader />
+    </>
   );
 };
 

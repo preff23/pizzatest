@@ -1,3 +1,58 @@
+/* базовый цвет под фон, чтобы не было "вспышки" до появления изображения */
+html, body { 
+  background: #E4E4E6; 
+}
+
+/* слой-оверлей */
+.boot-backdrop{
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  background: radial-gradient(120% 120% at 50% 30%, rgba(240,240,242,.9) 0%, rgba(228,228,230,.9) 60%, rgba(228,228,230,.92) 100%);
+  z-index: 9999;
+  transition: opacity .22s ease, visibility .22s ease;
+}
+
+.boot-backdrop[hidden]{
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+
+/* кольцо (намёк на хром) */
+.boot-ring{
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.08);
+  background:
+    radial-gradient(120% 120% at 80% 20%, rgba(255,255,255,.95) 0%, rgba(240,240,240,.7) 40%, rgba(200,200,200,.25) 100%);
+  box-shadow:
+    inset 0 0 14px rgba(255,255,255,.65),
+    inset 0 -10px 20px rgba(0,0,0,.08),
+    0 2px 8px rgba(0,0,0,.06);
+  animation: ringspin .9s ease-in-out infinite alternate;
+}
+
+@keyframes ringspin{
+  from { transform: rotate(0deg) scale(1); }
+  to   { transform: rotate(180deg) scale(1.06); }
+}
+
+.boot-label{
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,.45);
+}
+
+/* уважаем reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .boot-ring{ animation: none; }
+}
+
+/* Плавное появление контента */
+.app-root.is-loading { opacity: 0; }
+.app-root.is-ready   { opacity: 1; transition: opacity .22s ease; }
+
 /* Local Inter font */
 @font-face {
   font-family: 'Inter';
