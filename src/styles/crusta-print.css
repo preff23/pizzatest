@@ -64,6 +64,11 @@ html, body {
   -webkit-backdrop-filter: none !important;
 }
 
+/* Убираем дополнительный фон после загрузки */
+.app-root.is-ready body::before {
+  display: none !important;
+}
+
 /* Local Inter font */
 @font-face {
   font-family: 'Inter';
