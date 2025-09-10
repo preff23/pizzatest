@@ -262,14 +262,6 @@ body::before {
   }
 }
 
-/* На очень светлых фонах контур можно ослабить */
-@media (prefers-contrast: more){
-  .row .desc{
-    text-shadow:
-      0 1px 0 rgba(255,255,255,.18),
-      0 0 1px rgba(0,0,0,.12);
-  }
-}
 
 /* Dish row */
 .row{
@@ -295,15 +287,11 @@ body::before {
   margin:0; 
   font-size:15px; 
   line-height:1.35; 
-  color:#2E2E2E;                /* темнее, чем было */
+  color:#2E2E2E;
   font-weight: 500;
   letter-spacing: 0.01em;
   max-width:58ch;
-  margin-right: 72px;  /* подправь под конкретный правый столбец */
-  /* деликатный контур для тёмных пятен фона, почти незаметен на светлом */
-  text-shadow:
-    0 1px 0 rgba(255,255,255,.25),
-    0 0 1px rgba(0,0,0,.10);
+  margin-right: 72px;
 }
 .row .aside{
   display:flex; flex-direction:column; align-items:flex-end; gap:10px;
