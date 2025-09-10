@@ -93,7 +93,7 @@ export const MenuPage: React.FC = () => {
         onChange={handleCategoryChange} 
       />
       <h2 className="section-title">{selectedCategory.toUpperCase()}</h2>
-      <div className="section-rule"></div>
+      <div className="section-divider"></div>
       
       <div className={`list-anim ${listVisible ? 'show' : ''}`}>
         {isLoading ? (
