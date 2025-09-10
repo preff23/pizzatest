@@ -65,7 +65,7 @@ html, body {
 }
 
 /* Убираем дополнительный фон после загрузки */
-.app-root.is-ready body::before {
+body.app-ready::before {
   display: none !important;
 }
 
