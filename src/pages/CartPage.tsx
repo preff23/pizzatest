@@ -153,15 +153,14 @@ export const CartPage: React.FC = () => {
                 >
                   +
                 </button>
+                <button
+                  className="icon-btn remove-btn"
+                  onClick={() => remove(itemId)}
+                  style={{ color: 'var(--danger)' }}
+                >
+                  ×
+                </button>
               </div>
-              
-              <button
-                className="icon-btn remove-btn"
-                onClick={() => remove(itemId)}
-                style={{ color: 'var(--danger)' }}
-              >
-                ×
-              </button>
               
               <div className="total item-price">
                 {(item.price * item.qty).toLocaleString('ru-RU')} ₽

@@ -193,13 +193,9 @@ body::before {
   .qty-controls { 
     order: 2; 
   }
-  
-  .remove-btn {   
-    order: 3; 
-  }
 
   .item-price {
-    order: 4;
+    order: 3;
     width: 100%;
     margin-top: 8px;
     margin-left: 0;
@@ -638,7 +634,7 @@ button:focus-visible{ outline:2px solid rgba(14,17,20,.25); outline-offset:2px; 
 }
 
 .remove-btn {
-  margin-right: 12px;
+  margin-left: 4px;
 }
 
 .item-price {
