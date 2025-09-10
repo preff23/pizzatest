@@ -133,13 +133,6 @@ const App: React.FC = () => {
     });
   }, [ready]);
 
-  // Добавляем класс к body для скрытия дополнительного фона
-  useEffect(() => {
-    if (ready) {
-      document.body.classList.add('app-ready');
-    }
-  }, [ready]);
-
   useEffect(() => {
     // Инициализация Telegram WebApp
     if (window.Telegram?.WebApp) {
