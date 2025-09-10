@@ -124,14 +124,13 @@ const App: React.FC = () => {
     boot();
   }, []);
 
-  // Прячем лоадер когда всё готово
+  // Прячем лоадер когда всё готово - жёсткое удаление для iOS
   useEffect(() => {
-    const el = document.querySelector(".boot-backdrop") as HTMLElement | null;
-    if (!el) return;
-    if (ready) {
-      // малюсенькая задержка для плавности
-      requestAnimationFrame(() => el.setAttribute("hidden", ""));
-    }
+    if (!ready) return;
+    requestAnimationFrame(() => {
+      const el = document.querySelector(".boot-backdrop");
+      if (el && el.parentElement) el.parentElement.removeChild(el);
+    });
   }, [ready]);
 
   useEffect(() => {
@@ -204,8 +203,8 @@ const App: React.FC = () => {
           </div>
         </CartProvider>
       </div>
-      {/* Лоадер поверх всего до готовности */}
-      <BootLoader />
+      {/* ВАЖНО: рендерить лоадер только когда !ready */}
+      {!ready && <BootLoader />}
     </>
   );
 };
