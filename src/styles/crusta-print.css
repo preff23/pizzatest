@@ -40,11 +40,9 @@ body::before {
   right: 20%;
   width: 80%;
   height: 100vh;
-  background-image: url('/liquidchrome.png');
-  background-size: cover;
-  background-position: right center;
-  filter: contrast(1.05) saturate(1.02) blur(2px);
-  will-change: transform;
+  background: url('/PHON.PNG') no-repeat right top;
+  background-size: 80% auto;
+  background-position: right calc(var(--headerH, 56px) + 30px);
   z-index: -1;
   pointer-events: none;
 }
@@ -288,20 +286,20 @@ body::before {
 
 /* Section heading */
 .section-title{
-  text-align: center;
-  font-weight: 700;
-  letter-spacing: .5px;
-  margin: 24px 16px 8px;
-  font-size: 18px;
-  color: #1C1C1E;
-  text-transform: uppercase;
+  text-align: center;       /* центрирование заголовка PIZZA */
+  font-weight: 800;
+  letter-spacing: .06em;
+  padding: 8px 16px 12px;
+  border-bottom: 1px solid rgba(0,0,0,.12);  /* оставить текущую разделительную линию */
+  margin: 4px 0 8px;
+  position: static;
+  top: auto;
+  z-index: auto;
+  background: transparent;
+  font-size:18px; 
+  text-transform:uppercase;
 }
-
-.section-title + .section-divider {
-  height: 1px;
-  background: rgba(0,0,0,.06);
-  margin: 0 16px 16px;
-}
+.section-rule{ height:1px; background:var(--line); }
 
 /* адаптивный случай (если вдруг что-то не влазит по ширине) — можно сузить шрифт */
 @media (max-width: 340px){
@@ -318,40 +316,12 @@ body::before {
 }
 
 
-/* Menu list container */
-.list-anim {
-  position: relative;
-}
-
-/* Правый градиент-оверлей для читаемости на фоне */
-.list-anim::after {
-  content: "";
-  position: absolute;
-  top: 0; right: 0; bottom: 0;
-  width: 28%;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,0) 65%,
-    rgba(245,245,247,.55) 90%,
-    rgba(245,245,247,.75) 100%
-  );
-  z-index: 0;
-}
-
-/* Контент списка над градиентом */
-.row, .row * { 
-  position: relative; 
-  z-index: 1; 
-}
-
 /* Dish row */
 .row{
   display:grid; grid-template-columns: 1fr auto; gap:20px;
-  padding:18px 16px; 
+  padding:20px 0; 
   border-bottom: 1px solid transparent; /* убираем старую линию */
   position: relative;
-  margin-bottom: 20px;
 }
 .row::after{
   content: '';
@@ -385,56 +355,53 @@ body::before {
 }
 .price{
   color: #111318; 
-  font-weight: 600;
+  font-weight: 800;
   font-size: 17px;
-  padding: 8px 12px;
-  min-height: 40px;
-  border-radius: 16px;
-  background: rgba(255,255,255,.92);
-  box-shadow: 0 4px 14px rgba(0,0,0,.09);
-  line-height: 24px;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  display: inline-flex;
-  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid rgba(0,0,0,0.25);
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,.5),
+    0 2px 8px rgba(0,0,0,0.1),
+    0 1px 3px rgba(0,0,0,0.15);
+  line-height: 1; 
+  display: inline-flex; 
+  align-items: center; 
   justify-content: center;
   white-space: nowrap;
-  transition: transform .18s ease, box-shadow .18s ease;
+  transition: all .16s cubic-bezier(.2,.8,.2,1);
 }
 
 /* Add button: премиальный outline-стиль + блик */
 .btn-add{
-  width: 44px; 
-  height: 44px; 
-  border-radius: 50%;
-  border: 1px solid rgba(0,0,0,.15);
-  background: rgba(255,255,255,.65);
-  color: #1C1C1E;
-  display: grid; 
-  place-items: center;
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  width: 48px; 
+  height: 48px; 
+  border-radius: 999px;
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid rgba(0,0,0,0.25);                  
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,.5),
+    0 2px 8px rgba(0,0,0,0.1),
+    0 1px 3px rgba(0,0,0,0.15);
+  color: #111318;
+  transition: all .16s cubic-bezier(.2,.8,.2,1);
+  font-size: 22px; 
+  line-height: 1;
   cursor: pointer;
-  font-size: 20px;
-  font-weight: 600;
 }
-.btn-add:active {
-  transform: scale(.96);
-  box-shadow: 0 4px 12px rgba(0,0,0,.12);
-  background: rgba(255,255,255,.9);
+.btn-add svg, 
+.btn-add i{
+  color: #111318;
+  stroke-width: 2.25px;
 }
-
-.price:active { 
-  transform: translateY(-1px); 
-  box-shadow: 0 6px 16px rgba(0,0,0,.10);
-}
-
-/* Смена цифры в счётчике — мягкий «ток» */
-.qty-num {
-  display: inline-block;
-  transition: transform .22s ease;
-  will-change: transform;
-}
-.qty-num.tock { transform: translateY(-2px); }
 .btn-add:hover{
   background: rgba(255,255,255,0.95);
   border-color: rgba(0,0,0,0.35);

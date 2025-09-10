@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 type Props = {
   itemId: string;
@@ -6,19 +6,9 @@ type Props = {
   onRemove: () => void;
 };
 
-// Функция анимации счетчика
-function animateQty(el: HTMLElement) {
-  el.classList.remove('tock');
-  // force reflow
-  void el.offsetWidth;
-  el.classList.add('tock');
-  setTimeout(() => el.classList.remove('tock'), 180);
-}
-
 export default function QtyButton({ onAdd, onRemove }: Props) {
   const [count, setCount] = useState(0);
   const [isPulsing, setIsPulsing] = useState(false);
-  const qtyRef = useRef<HTMLSpanElement>(null);
 
   const handleAdd = () => {
     const newCount = count + 1;
@@ -33,11 +23,6 @@ export default function QtyButton({ onAdd, onRemove }: Props) {
     // Pulse animation
     setIsPulsing(true);
     setTimeout(() => setIsPulsing(false), 180);
-    
-    // Animate quantity change
-    if (qtyRef.current) {
-      animateQty(qtyRef.current);
-    }
   };
 
   const handleRemove = () => {
@@ -54,11 +39,6 @@ export default function QtyButton({ onAdd, onRemove }: Props) {
       // Pulse animation
       setIsPulsing(true);
       setTimeout(() => setIsPulsing(false), 180);
-      
-      // Animate quantity change
-      if (qtyRef.current) {
-        animateQty(qtyRef.current);
-      }
     }
   };
 
@@ -83,7 +63,7 @@ export default function QtyButton({ onAdd, onRemove }: Props) {
       >
         –
       </button>
-      <span ref={qtyRef} className="qty-num">
+      <span className={`qval ${isPulsing ? 'pulse' : ''}`}>
         {count}
       </span>
       <button 
