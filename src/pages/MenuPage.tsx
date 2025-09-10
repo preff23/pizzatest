@@ -106,11 +106,11 @@ export const MenuPage: React.FC = () => {
         ) : (
           filteredMenu.map(item => (
             <div key={item.id} className="row">
-              <div className="row__text">
+              <div>
                 <h3>{item.name}</h3>
                 <p className="desc">{item.desc}</p>
               </div>
-              <div className="row__controls">
+              <div className="aside">
                 <div className="price">{item.price.toLocaleString('ru-RU')} ₽</div>
                 <QtyButton
                   itemId={item.id}
