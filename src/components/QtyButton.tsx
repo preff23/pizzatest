@@ -42,37 +42,34 @@ export default function QtyButton({ onAdd, onRemove }: Props) {
     }
   };
 
-  if (count === 0) {
-    return (
-      <button
-        className={`btn-add ${isPulsing ? 'pulse' : ''}`}
-        aria-label="Добавить"
-        onClick={handleAdd}
-      >
-        +
-      </button>
-    );
-  }
-
   return (
-    <div className="qty">
-      <button 
-        className="qbtn" 
-        aria-label="Убавить"
-        onClick={handleRemove}
-      >
-        –
-      </button>
-      <span className={`qval ${isPulsing ? 'pulse' : ''}`}>
-        {count}
-      </span>
-      <button 
-        className="qbtn" 
+    <div className="qty-container">
+      <button
+        className={`btn-add ${isPulsing ? 'pulse' : ''} ${count > 0 ? 'hidden' : ''}`}
         aria-label="Добавить"
         onClick={handleAdd}
       >
         +
       </button>
+      <div className={`qty ${count === 0 ? 'hidden' : ''}`}>
+        <button 
+          className="qbtn" 
+          aria-label="Убавить"
+          onClick={handleRemove}
+        >
+          –
+        </button>
+        <span className={`qval ${isPulsing ? 'pulse' : ''}`}>
+          {count}
+        </span>
+        <button 
+          className="qbtn" 
+          aria-label="Добавить"
+          onClick={handleAdd}
+        >
+          +
+        </button>
+      </div>
     </div>
   );
 }
