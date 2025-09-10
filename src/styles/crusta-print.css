@@ -183,24 +183,43 @@ body::before {
 @media (max-width: 414px) {
   .cart-line {
     flex-wrap: wrap;
+    gap: 6px;
   }
 
   .cart-title {
     order: 1;
     width: 100%;
+    margin-right: 6px;
   }
 
   .qty-controls { 
-    order: 2; 
+    order: 2;
+    gap: 2px;
+    margin-right: 6px;
+  }
+
+  .qty-controls .icon-btn {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+    font-size: 14px;
+  }
+
+  .qty-controls .qty {
+    font-size: 13px;
+    min-width: 14px;
   }
 
   .item-price {
     order: 3;
     width: 100%;
-    margin-top: 8px;
+    margin-top: 6px;
     margin-left: 0;
     display: inline-flex;
     justify-content: flex-start;
+    font-size: 13px;
+    padding: 3px 6px;
   }
 }
 
@@ -617,32 +636,48 @@ button:focus-visible{ outline:2px solid rgba(14,17,20,.25); outline-offset:2px; 
 .cart-line {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   justify-content: space-between;
 }
 
 .cart-title {
   flex: 1;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .qty-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-right: 12px;
+  gap: 4px;
+  margin-right: 8px;
+}
+
+.qty-controls .icon-btn {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  font-size: 16px;
+}
+
+.qty-controls .qty {
+  font-weight: 600;
+  min-width: 16px;
+  text-align: center;
+  color: var(--ink);
+  font-size: 14px;
 }
 
 .remove-btn {
-  margin-left: 4px;
+  margin-left: 2px;
 }
 
 .item-price {
   white-space: nowrap;
   font-weight: 800;
   color: #111318;
-  font-size: 16px;
-  padding: 6px 12px;
+  font-size: 14px;
+  padding: 4px 8px;
   border-radius: 999px;
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(8px);
