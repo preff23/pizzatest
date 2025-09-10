@@ -1,80 +1,3 @@
-/* базовый цвет под фон, чтобы не было "вспышки" до появления изображения */
-html, body { 
-  background: #E4E4E6; 
-}
-
-/* Убираем базовый фон после загрузки, чтобы показать фоновое изображение */
-.app-root.is-ready html,
-.app-root.is-ready body {
-  background: transparent;
-}
-
-/* Убираем дополнительный фон body после загрузки */
-.app-root.is-ready body {
-  background: transparent !important;
-}
-
-/* слой-оверлей */
-.boot-backdrop{
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  display: grid; place-items: center; gap: 14px;
-  background: radial-gradient(120% 120% at 50% 30%, rgba(240,240,242,.95) 0%, rgba(228,228,230,.92) 100%);
-  z-index: 2147483647;
-  /* чтобы iOS не кешировал пол-слоя */
-  will-change: opacity, transform;
-  contain: layout paint;
-}
-
-/* НИКАКИХ .boot-backdrop[hidden] — мы не используем скрытие, только размонтирование */
-
-/* кольцо (намёк на хром) */
-.boot-ring{
-  width: 38px; height: 38px; border-radius: 50%;
-  border: 1px solid rgba(0,0,0,.08);
-  background:
-    radial-gradient(120% 120% at 80% 20%, rgba(255,255,255,.95) 0%, rgba(240,240,240,.7) 40%, rgba(200,200,200,.25) 100%);
-  box-shadow:
-    inset 0 0 14px rgba(255,255,255,.65),
-    inset 0 -10px 20px rgba(0,0,0,.08),
-    0 2px 8px rgba(0,0,0,.06);
-  animation: ringspin .9s ease-in-out infinite alternate;
-}
-
-@keyframes ringspin{
-  from { transform: rotate(0deg) scale(1); }
-  to   { transform: rotate(180deg) scale(1.06); }
-}
-
-.boot-label{
-  font-size: 12px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: rgba(0,0,0,.45);
-}
-
-/* уважаем reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .boot-ring{ animation: none; }
-}
-
-/* Плавное появление контента */
-.app-root.is-loading { opacity: 0; }
-.app-root.is-ready   { opacity: 1; transition: opacity .22s ease; }
-
-/* Зафиксировать слой фона ниже контента */
-.bg-layer { position: fixed; inset: 0; z-index: 0; }
-.app-root { position: relative; z-index: 1; }
-
-/* На всякий: если где-то остались псевдоэлементы-сримы, отключить их глобально для готового состояния */
-.app-root.is-ready .page-scrim,
-.app-root.is-ready .page-scrim::before,
-.app-root.is-ready .page-scrim::after {
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
 /* Local Inter font */
 @font-face {
   font-family: 'Inter';
@@ -104,7 +27,6 @@ html, body {
 html,body,#root{height:100%}
 body{
   margin:0;
-  background: #d9d9d9;
   color:var(--ink);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
