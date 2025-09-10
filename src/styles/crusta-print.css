@@ -9,6 +9,11 @@ html, body {
   background: transparent;
 }
 
+/* Убираем дополнительный фон body после загрузки */
+.app-root.is-ready body {
+  background: transparent !important;
+}
+
 /* слой-оверлей */
 .boot-backdrop{
   position: fixed;
