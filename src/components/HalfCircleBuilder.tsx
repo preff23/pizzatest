@@ -3,6 +3,7 @@ import { MENU } from '../data/menu';
 import { useCart } from '../store/cartContext';
 import { halfPrice, MenuItem } from '../types';
 import Toast from './Toast';
+import { HalfOptionRow } from './HalfOptionRow';
 import '../styles/half-circle.css';
 
 type Side = 'left'|'right'
@@ -159,19 +160,11 @@ export const HalfCircleBuilder: React.FC = () => {
               <header className="sheet-head">Выберите половинку</header>
               <div className="sheet-list">
                 {menuItems.map(item => (
-                  <div key={item.id} className="card">
-                    <h3>{item.name}</h3>
-                    <div className="desc">{item.desc}</div>
-                    <div className="row">
-                      <span className="price">{item.price} ₽</span>
-                      <button 
-                        className="btn"
-                        onClick={() => choose(item)}
-                      >
-                        Выбрать
-                      </button>
-                    </div>
-                  </div>
+                  <HalfOptionRow
+                    key={item.id}
+                    item={item}
+                    onSelect={choose}
+                  />
                 ))}
               </div>
             </div>
