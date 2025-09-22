@@ -24,6 +24,7 @@ export const HalfCircleBuilder: React.FC = () => {
   const prevTotalRef = useRef(0);
 
   const menuItems = useMemo(() => {
+    // Включаем все позиции в конструктор половинок, включая десерты
     return MENU;
   }, []);
 
