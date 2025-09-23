@@ -8,7 +8,7 @@ import { useCart } from '../store/cartContext';
 
 export const MenuPage: React.FC = () => {
   const { add, remove } = useCart();
-  const [selectedCategory, setSelectedCategory] = useState<'Pizza' | 'Vegan' | 'Build'>('Pizza');
+  const [selectedCategory, setSelectedCategory] = useState<'Pizza' | 'Build'>('Pizza');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [listVisible, setListVisible] = useState(true);
@@ -28,18 +28,13 @@ export const MenuPage: React.FC = () => {
       count: MENU.filter(item => item.category === 'Pizza').length 
     },
     { 
-      key: 'Vegan', 
-      label: 'Vegan', 
-      count: MENU.filter(item => item.category === 'Vegan').length 
-    },
-    { 
       key: 'Build', 
       label: 'Собрать'
     },
   ];
 
   const handleCategoryChange = (key: string) => {
-    const newCategory = key as 'Pizza' | 'Vegan' | 'Build';
+    const newCategory = key as 'Pizza' | 'Build';
     
     if (newCategory === 'Build') {
       setSelectedCategory(newCategory);
